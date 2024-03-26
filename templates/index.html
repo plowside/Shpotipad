@@ -108,6 +108,7 @@
 			align-items: center;
 			margin-left: 10px;
 			margin-bottom: 15px;
+			outline: none;
 			width: 92%;
 			padding: 5px;
 			border: 3px solid rgba(169, 169, 169, 0.3);
@@ -463,9 +464,9 @@
 		<p>Это основное содержимое страницы.</p>
 
 
-		<div class="sounds">
-		</div>
+		<div class="sounds"></div>
 	</div>
+	<div class="profileModal"></div>
 	<script>
 		var element_search_input = document.querySelector('.sidebar-search input');
 		var element_sounds = document.querySelector('.sounds');
@@ -633,22 +634,15 @@
 		}
 	}
 	async function openMenuUpload(){
+		var profileModal = document.querySelector('profileModal');
+		profileModal.innerHTML = ``;
 		
 	}
+	async function openMenuProfile(){
+		var profileModal = document.querySelector('profileModal');
+		profileModal.innerHTML = ``;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	}
 	searchResults();
 	</script>
 </body>

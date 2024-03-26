@@ -1,6 +1,11 @@
 fastapi
 uvicorn
+uvicorn[standard]
+httpx
+mega.py
 python-jose
 jinja2
 passlib[bcrypt]
 python-multipart
+pydub
+moviepy

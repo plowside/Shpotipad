@@ -1,13 +1,73 @@
-<audio id="myAudio">
-  <source src="soundpad://sound/8012aaf5-df37-487d-864b-e8f36a6c3e9c" type="audio/wav">
-  Your browser does not support the audio element.
-</audio>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modal Window</title>
+<style>
+	body {
+		font-family: Arial, sans-serif;
+		font-size: 20px;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
 
-<button onclick="playSound()">Play Sound</button>
+	.modal {
+		background-color: #f0f0f0;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+		text-align: center;
+	}
+
+	.modal input {
+		width: 100%;
+		padding: 10px;
+		margin-bottom: 10px;
+		border-radius: 5px;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+		outline-color: green;
+	}
+
+	.modal button {
+		padding: 10px 20px;
+		border: none;
+		border-radius: 5px;
+		background-color: #4CAF50;
+		color: white;
+		cursor: pointer;
+	}
+
+	.modal .createAccount {
+		background-color: transparent;
+		color: black;
+	}
+</style>
+</head>
+<body>
+
+<div class="modal">
+	<h2>Login</h2>
+	<div style="margin-top: 10px; border-radius: 10px; border: black;">
+		<button class="createAccount">Create Account</button>
+	</div>
+	<input type="text" placeholder="Email/Username">
+	<input type="password" placeholder="Password">
+	<button>Login</button>
+</div>
 
 <script>
-function playSound() {
-  var audio = document.getElementById("myAudio");
-  audio.play();
-}
+	document.querySelector('.createAccount').addEventListener('click', function() {
+		alert('Create Account button clicked!');
+		// Действия при нажатии на кнопку "Create Account"
+	});
 </script>
+
+</body>
+</html>

@@ -19,6 +19,7 @@ app = FastAPI(redoc_url=None, tags=[])#docs_url=None,
 app.include_router(api_router)
 
 templates = Jinja2Templates(directory="templates")
+for x in ['storage/uploads/sounds']: os.makedirs(x, exist_ok=True)
 #################################################################################################################################
 @app.on_event("startup")
 async def on_startup():

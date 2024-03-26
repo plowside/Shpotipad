@@ -1,4 +1,3 @@
 
 *.pyc
-*.db
-/storage
+/storage/uploads
