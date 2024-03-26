@@ -1,0 +1,13 @@
+<audio id="myAudio">
+  <source src="soundpad://sound/8012aaf5-df37-487d-864b-e8f36a6c3e9c" type="audio/wav">
+  Your browser does not support the audio element.
+</audio>
+
+<button onclick="playSound()">Play Sound</button>
+
+<script>
+function playSound() {
+  var audio = document.getElementById("myAudio");
+  audio.play();
+}
+</script>

@@ -1,0 +1,73 @@
+from fastapi import APIRouter, UploadFile, Response, Request, Header, File, Form
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.exceptions import HTTPException
+from typing import Optional
+
+import logging, hashlib, json
+
+from ..db_api import *
+from .models import *
+from .auth import *
+from config import *
+
+
+
+router = APIRouter(prefix='/api', tags=['api'])
+
+
+@router.post('/login')
+async def router_login(request: Request, response: Response, payload: UserLogin):
+	user = await get_user(payload)
+	if not user:
+		return {'status': False, 'code': 404, 'message': 'User not found'}
+
+	jwt_token = await auth_user(user)
+	return {'status': True, 'code': 200, **jwt_token}
+
+
+@router.post('/register')
+async def router_register(request: Request, response: Response, payload: UserRegister):
+	user = await create_user(payload)
+	if user.get('message'):
+		return {'status': False, 'code': 409, 'message': user.get('message')}
+	user = user['user']
+
+	jwt_token = await auth_user(user)
+	return {'status': True, 'code': 200, **jwt_token}
+
+@router.get('/me')
+async def router_me(request: Request, response: Response, Authorization: str = Header(None)):
+	user = jwt_token_check(Authorization)
+	if not user:
+		return {'status': False, 'code': 401, 'message': 'Unauthorized'}
+	user = user['user']
+
+	return {'status': True, 'code': 200, 'user': dict(user)}
+
+
+@router.post('/sound')
+def router_upload_sounds(request: Request, response: Response, sound_file: UploadFile, sound_data: str = Form(...), Authorization: str = Header(None)):
+	user = jwt_token_check(Authorization)
+	if not user:
+		return {'status': False, 'code': 401, 'message': 'Unauthorized'}
+	user = user['user']
+
+	try:
+		sound = SoundInDB(**json.loads(sound_data))
+		sound.sound_tags = [[x, 0] for x in sound.sound_tags]
+		sound.user_id = user.user_id
+	except Exception as e:
+		return {'status': False, 'code': 422, 'message': 'Missing data'}
+
+	_db = database_driver()
+	sound = _db.upload_sound(sound, sound_file)
+
+	return sound
+
+@router.get('/search')
+async def router_get_sounds(request: Request, response: Response, q: str = None, limit: str = None, state: str = None, Authorization: str = Header(None)):
+	if q == '': q = None
+	_db = database_driver()
+	sounds = await _db.get_sounds(q, limit, state)
+
+	return {'status': True, 'sounds': sounds}
