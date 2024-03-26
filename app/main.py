@@ -38,7 +38,7 @@ async def route_index(request: Request, Authorization: str = Cookie(None)):
 
 
 @app.get('/sound/{sound_id}')
-def route_get_image(sound_id: int):
+def route_get_sound(sound_id: int):
 	_db = database_driver()
 	con, cur = _db._get_connection()
 
@@ -57,7 +57,6 @@ def route_get_image(sound_id: int):
 			if not path['status']: raise HTTPException(status_code=404, detail="Sound not found")
 			path = path['path']
 		if os.path.exists(path):
-			print(path)
 			cur.execute('UPDATE sounds SET sound_downloads = sound_downloads + 1 WHERE sound_id = ?', [sound_id])
 			con.commit()
 			return FileResponse(path=path)
@@ -65,6 +64,33 @@ def route_get_image(sound_id: int):
 		logging.error(e)
 		raise HTTPException(status_code=404, detail="Sound not found")
 
+
+@app.get('/sounds/{sound_id}')
+def route_dwn_sound(sound_id: int):
+	_db = database_driver()
+	con, cur = _db._get_connection()
+
+	sound = cur.execute('SELECT * FROM sounds WHERE sound_id = ?', [sound_id]).fetchone()
+	if not sound:
+		raise HTTPException(status_code=404, detail="Sound not found")
+	sound = SoundInDB(**sound)
+
+	try:
+		sound_storage = sound.sound_url_data.split('|')
+		filename = f'{sound.sound_id}-{sound.sound_name.replace(" ", "-")}.mp3'
+		if sound_storage[0] == 'local':
+			path = sound.sound_url
+		elif sound_storage[0] == 'mega':
+			path = mega_client.get_file(filename, sound.sound_url)
+			if not path['status']: raise HTTPException(status_code=404, detail="Sound not found")
+			path = path['path']
+		if os.path.exists(path):
+			cur.execute('UPDATE sounds SET sound_downloads = sound_downloads + 1 WHERE sound_id = ?', [sound_id])
+			con.commit()
+			return FileResponse(path=path)
+	except Exception as e:
+		logging.error(e)
+		raise HTTPException(status_code=404, detail="Sound not found")
 
 
 

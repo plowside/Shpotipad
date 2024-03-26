@@ -7,11 +7,21 @@
 	<script src="https://unpkg.com/wavesurfer.js"></script>
 	<title>Shpotipad - Main</title>
 	<style>
+		@font-face {
+			font-family: 'Muli';
+			font-style: normal;
+			font-weight: 400;
+			font-display: swap;
+			src: url('static/fonts/main-idk.ttf') format('truetype');
+		}
 		body {
-			font-family: Arial, sans-serif;
+			font-family: Muli, sans-serif;
 			font-size: 18px;
 			margin: 0;
 			padding: 0;
+			color: #222;
+			box-sizing: border-box;
+			transition: background-color 0.3s ease;
 		}
 
 		::-webkit-scrollbar {
@@ -118,11 +128,10 @@
 		}
 		.sidebar-profile:hover {
 			transition: background-color 0.3s ease;
-			background-color: #e0e0e0;
+			background-color: rgb(113, 107, 227, .2);
 		}
 		.sidebar-profile:active {
-			transition: none;
-			background-color: #d0d0d0;
+			background-color: rgb(113, 107, 227, .5);
 		}
 		.sidebar-profile p {
 			margin-left: 10px;
@@ -147,7 +156,6 @@
 		}
 		.sound-block a {
 			text-decoration: none;
-			color: black;
 		}
 		.sound-block-content {
 			padding: 15px;
@@ -163,22 +171,24 @@
 			margin-right: 5px;
 			padding: 5px;
 		}
-
 		.sound-row-header {
 			display: flex;
 			flex-direction: row;
 			margin: 0px 0px 30px 0px;
 		}
 		.sound-row-item-name {
+			color: #0C0A3E;
+			display: block;
 			font-size: 25px;
+			line-height: 1.2;
 			margin-right: auto;
 		}
 		.sound-row-item-stats {
 			font-size: 20px;
 			margin-left: auto;
 			padding: 5px;
+			color: #222;
 		}
-		
 		.sound-row-play {
 			display: flex;
 			flex-direction: row;
@@ -206,7 +216,6 @@
 		.sound-row-item-play:hover {
 			background-color: rgba(0, 0, 0, 0.2);
 		}
-
 		.sound-row-item-play:active {
 			background-color: rgba(0, 0, 0, 0.3);
 		}
@@ -220,22 +229,24 @@
 			margin-left: auto;
 			font-size: 16px;
 		}
-
-
 		.sound-row-tags {
 			display: flex;
 			flex-wrap: wrap;
 			font-size: 12px;
 			margin: 15px 0px 15px 0px;
+			color: #fff;
 		}
 		.sound-row-item-tag {
-			background-color: darkblue;
+			background-color: #0c0a3e;
 			color: #fff;
-			padding: 3px;
-			border-radius: 10px;
+			font-weight: 600;
+			padding: 3px 5px;
+			border-radius: 20px;
 			margin: 2px 6px 5px 0px;
 		}
-
+		.sound-row-item-tag:hover {
+			color: #f9564f;
+		}
 		.sound-row-dwn {
 			display: flex;
 			flex-direction: row;
@@ -257,181 +268,297 @@
 			transition: background-color 0.3s ease;
 			cursor: pointer;
 		}
-
 		.sound-row-item-addtos:hover {
-			background-color: rgba(0, 0, 0, 0.1);
+			background-color: rgba(116,124,236, .15);
 		}
-
 		.sound-row-item-addtos:active {
-			background-color: rgba(0, 0, 0, 0.2);
+			background-color: rgba(116,124,236, .3);
 		}
-
-
 		.sound-row-item-dwn {
 			margin-left: auto;
 			padding: 5px;
 			cursor: pointer;
 		}
-
 		.sound-row-item-share {
 			margin-left: auto;
 			padding: 5px;
 			cursor: pointer;
 		}
-
 		.sound-row-item-dropdown {
 			margin: 0px 5px 0px auto;
 			padding: 5px;
 			cursor: pointer;
 		}
 	
-	input[type="range"] {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		width: 200px;
-		background-color: transparent;
 
-		&:focus {
-			outline-color: #f8b195;
+
+		input[type="range"] {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			width: 200px;
+			background-color: transparent;
+
+			&:focus {
+				outline-color: #f8b195;
+			}
 		}
-	}
 
-	input[type="range"]::-webkit-slider-runnable-track {
-		-webkit-appearance: none;
-		appearance: none;
-		height: 3px;
-		background: rgb(246, 114, 128);
-		background: -webkit-linear-gradient(
-			left,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		background: linear-gradient(
-			to right,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		filter: progid:DXImageTransform.Microsoft.gradient(
-			startColorstr="#f67280",
-			endColorstr="#355c7d",
-			GradientType=1
-		);
-	}
-
-	input[type="range"]::-moz-range-track {
-		-moz-appearance: none;
-		appearance: none;
-		height: 3px;
-		background: rgb(246, 114, 128);
-		background: -moz-linear-gradient(
-			left,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		background: linear-gradient(
-			to right,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		filter: progid:DXImageTransform.Microsoft.gradient(
-			startColorstr="#f67280",
-			endColorstr="#355c7d",
-			GradientType=1
-		);
-	}
-
-	input[type="range"]::-ms-track {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		height: 3px;
-		background: rgb(246, 114, 128);
-		background: -moz-linear-gradient(
-			left,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		background: -webkit-linear-gradient(
-			left,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		background: linear-gradient(
-			to right,
-			rgba(246, 114, 128, 1) 0%,
-			rgba(192, 108, 132, 1) 50%,
-			rgba(53, 92, 125, 1) 100%
-		);
-		filter: progid:DXImageTransform.Microsoft.gradient(
-			startColorstr="#f67280",
-			endColorstr="#355c7d",
-			GradientType=1
-		);
-	}
-	input[type="range"]::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		appearance: none;
-		border: 2px solid #f8b195;
-		border-radius: 50%;
-		height: 20px;
-		width: 20px;
-		position: relative;
-		bottom: 8px;
-		background: #222
-		center no-repeat;
-		background-size: 50%;
-		box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-		cursor: grab;
-		&:active {
-			cursor: grabbing;
+		input[type="range"]::-webkit-slider-runnable-track {
+			-webkit-appearance: none;
+			appearance: none;
+			height: 3px;
+			background: rgb(246, 114, 128);
+			background: -webkit-linear-gradient(
+				left,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			background: linear-gradient(
+				to right,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			filter: progid:DXImageTransform.Microsoft.gradient(
+				startColorstr="#f67280",
+				endColorstr="#355c7d",
+				GradientType=1
+			);
 		}
-	}
 
-	input[type="range"]::-moz-range-thumb {
-		-moz-appearance: none;
-		appearance: none;
-		border: 2px solid #f8b195;
-		border-radius: 50%;
-		height: 20px;
-		width: 20px;
-		position: relative;
-		bottom: 8px;
-		background: #222
-		center no-repeat;
-		background-size: 50%;
-		box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-		cursor: grab;
-		&:active {
-			cursor: grabbing;
+		input[type="range"]::-moz-range-track {
+			-moz-appearance: none;
+			appearance: none;
+			height: 3px;
+			background: rgb(246, 114, 128);
+			background: -moz-linear-gradient(
+				left,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			background: linear-gradient(
+				to right,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			filter: progid:DXImageTransform.Microsoft.gradient(
+				startColorstr="#f67280",
+				endColorstr="#355c7d",
+				GradientType=1
+			);
 		}
-	}
 
-	input[type="range"]::-ms-thumb {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		border: 2px solid #f8b195;
-		border-radius: 50%;
-		height: 20px;
-		width: 20px;
-		position: relative;
-		bottom: 8px;
-		background: #222
-		center no-repeat;
-		background-size: 50%;
-		box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-		cursor: grab;
-		&:active {
-			cursor: grabbing;
+		input[type="range"]::-ms-track {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			height: 3px;
+			background: rgb(246, 114, 128);
+			background: -moz-linear-gradient(
+				left,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			background: -webkit-linear-gradient(
+				left,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			background: linear-gradient(
+				to right,
+				rgba(246, 114, 128, 1) 0%,
+				rgba(192, 108, 132, 1) 50%,
+				rgba(53, 92, 125, 1) 100%
+			);
+			filter: progid:DXImageTransform.Microsoft.gradient(
+				startColorstr="#f67280",
+				endColorstr="#355c7d",
+				GradientType=1
+			);
 		}
-	}
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			border: 2px solid #f8b195;
+			border-radius: 50%;
+			height: 20px;
+			width: 20px;
+			position: relative;
+			bottom: 8px;
+			background: #222
+			center no-repeat;
+			background-size: 50%;
+			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+			cursor: grab;
+			&:active {
+				cursor: grabbing;
+			}
+		}
+
+		input[type="range"]::-moz-range-thumb {
+			-moz-appearance: none;
+			appearance: none;
+			border: 2px solid #f8b195;
+			border-radius: 50%;
+			height: 20px;
+			width: 20px;
+			position: relative;
+			bottom: 8px;
+			background: #222
+			center no-repeat;
+			background-size: 50%;
+			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+			cursor: grab;
+			&:active {
+				cursor: grabbing;
+			}
+		}
+
+		input[type="range"]::-ms-thumb {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			border: 2px solid #f8b195;
+			border-radius: 50%;
+			height: 20px;
+			width: 20px;
+			position: relative;
+			bottom: 8px;
+			background: #222
+			center no-repeat;
+			background-size: 50%;
+			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+			cursor: grab;
+			&:active {
+				cursor: grabbing;
+			}
+		}
+
+	
+
+
+		.profileModal {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			gap: 0.4rem;
+			width: 450px;
+			padding: 1.3rem;
+			min-height: 250px;
+			position: fixed;
+			z-index: 2;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background-color: white;
+			border: 1px solid #ddd;
+			border-radius: 15px;
+		}
+		.profileModal .btn-close {
+			padding: 0.5rem 0.7rem;
+			background: #eee;
+			border-radius: 50%;
+			transform: none;
+			margin-left: auto;
+			transition: background-color .5s ease;
+		}
+		.profileModal .btn-close:hover {
+			background-color: rgb(116, 130, 236, .6);
+		}
+		.profileModal h2 {
+			font-size: 30px;
+			margin: 0;
+			margin-bottom: 30px;
+			text-align: center;
+		}
+		.profileModal button {
+			cursor: pointer;
+			border: none;
+			font-weight: 600;
+		}
+		.profileModal .login-block {
+			text-align: center;
+		}
+		.profileModal input {
+			font-size: 18px;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+			outline-color: #7482ec;
+		}
+		.profileModal input.password {
+			display: inline-block;
+		}
+
+		.profileModal i.fa-eye-slash {
+			position: absolute;
+			margin-left: -100px;
+			bottom: 28.5%;
+			right: 7%;
+			cursor: pointer;
+		}
+		.profileModal .login-button {
+			font-size: 20px;
+			padding: 10px 25px;
+			margin-top: 10px;
+			border: none;
+			border-radius: 5px;
+			background-color: #7482ec;
+			color: white;
+			cursor: pointer;
+			font-weight: 600;
+		}
+		.profileModal .createAccount {
+			font-size: 16px;
+			padding: 2px 10px;
+			background-color: transparent;
+			color: black;
+			margin-bottom: 5px;
+			border-radius: 10px;
+			transition: background-color .7s ease;
+		}
+		.profileModal .createAccount:hover {
+			background-color: rgb(116, 130, 236, .3);
+		}
+
+		.notification {
+			position: absolute;
+			top: 10px;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: #333;
+			color: #fff;
+			padding: 10px 20px;
+			border-radius: 8px;
+			opacity: 0;
+			transition: opacity 0.5s ease;
+			z-index: 9999;
+		}
+		.overlay {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(3px);
+			z-index: 1;
+		}
+		.hidden {
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -452,9 +579,7 @@
 			<i class="fa-regular fa-user"></i>
 			<p>Log In</p>
 		</div>
-
 	</div>
-
 	<div id="content">
 		<div class="sidebar-search">
 			<input type="text" placeholder="Search">
@@ -462,16 +587,51 @@
 		</div>
 		<h1>Основное содержимое</h1>
 		<p>Это основное содержимое страницы.</p>
-
-
 		<div class="sounds"></div>
 	</div>
-	<div class="profileModal"></div>
+	
+
+	<section class="profileModal hidden">
+		<button class="btn-close">⨉</button>
+		<h2>Sign In</h2>
+		<div class="login-block">
+			<div style="text-align: left;">
+				<button class="createAccount">Create Account</button>
+			</div>
+			<input type="text" class="email" placeholder="Email/Username">
+			<input type="password" class="password" placeholder="Password">
+			<i class="togglePassword fa-regular fa-eye-slash"></i>
+			<button class="login-button" onclick="sendLogin()">Login</button>
+		</div>
+	</section>
+	<div class="overlay hidden"></div>
 	<script>
 		var element_search_input = document.querySelector('.sidebar-search input');
 		var element_sounds = document.querySelector('.sounds');
+		var profileModal = document.querySelector('.profileModal');
+		var togglePassword = document.querySelector('.togglePassword');
+		var overlay = document.querySelector('.overlay');
 		var sounds_state = 'new';
 		var wavesurfers = {'current': {'sound_id': null, 'obj': null}};
+		var states = {modal: false}
+
+		function showNotification(text, color) {
+			var notification = document.createElement('div');
+			notification.className = 'notification';
+			notification.textContent = text;
+			notification.style.backgroundColor = color;
+			document.body.appendChild(notification);
+			setTimeout(function() {
+			    notification.style.opacity = '1';
+			}, 100);
+
+			setTimeout(function() {
+				notification.style.opacity = '0';
+				setTimeout(function() {
+					document.body.removeChild(notification);
+				}, 500);
+			}, 1000);
+		}
 
 
 		async function req_post(url = '', data = {}) {
@@ -479,13 +639,11 @@
 			if (!req.ok) { throw new Error('Network response was not ok'); }
 			return req.json();
 		}
-		
 		async function req_get(url = '', params = {}) {
 			var req = await fetch(new URLSearchParams(params).toString() ? `${url}?${new URLSearchParams(params).toString()}` : url, {method: 'GET'});
 			if (!req.ok) { throw new Error('Network response was not ok'); }
 			return req.json();
 		}
-
 		async function searchResults(_limit = [0, 20]) {
 			(async () => {
 				try {
@@ -501,20 +659,10 @@
 			})();
 		}
 
-		async function downloadBlob(url, filename) {
-			try {
-				var resp = await fetch(url);
-				var blob = await resp.blob();
-				var a = document.createElement("a");
-				var objectUrl = window.URL.createObjectURL(blob);
-				a.href = objectUrl;
-				a.download = filename;
-				a.click();
-				window.URL.revokeObjectURL(objectUrl);
-			} catch (error) {
-				console.error("Error downloading Sound:", error);
-			}
-		}
+
+		searchResults();
+
+
 
 		let timeoutId;
 		element_search_input.addEventListener('input', function() {
@@ -534,7 +682,7 @@
 		<div class="sound-block-content" sound_id=`+ sound_result['sound_id'] +`>
 			<div class="sound-row-header">
 				<div class="sound-row-item-name">`+ sound_result['sound_name'] +`</div>
-				<div class="sound-row-item-stats"><a href="asd">±`+ sound_result['sound_stats'] +`</a></div>
+				<div class="sound-row-item-stats"><span>` + (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '-')  + sound_result['sound_stats'] +`</span></div>
 			</div>
 			<div class="sound-row-play">
 				<div class="sound-row-item" style="margin-right: auto;">
@@ -547,16 +695,16 @@
 			sound_result['sound_tags'].forEach(function(x){
 				var tag = x.split('|');
 				if (tag[1] == 0){
-					div += `\n				<div class="sound-row-item-tag">`+ tag[0] +`</div>`;
+					div += `\n				<a href="search?q=`+ tag[0] +`" class="sound-row-item-tag">`+ tag[0] +`</a>`;
 				} else if (tag[1] == 1){
-					div += `\n				<div class="sound-row-item-tag">`+ tag[0] +`</div>`;
+					div += `\n				<a href="search?q=`+ tag[0] +`" class="sound-row-item-tag">`+ tag[0] +`</a>`;
 				}
 			});
 
 			div += `</div>
 			<div class="sound-row-dwn">
 				<button class="sound-row-item-addtos"><img width="32" height="32" src="https://img.icons8.com/nolan/64/soundpad.png" alt="soundpad"/>Add to Shpotipad</button>
-				<div class="sound-row-item-dwn"><a onClick="javascript:downloadBlob('sound/` + sound_result['sound_id'] + `', '` + sound_result['sound_id'] + '-' + sound_result['sound_name'].replace(/ /g, "-") + `.mp3')" target="_blank">` + sound_result['sound_downloads'] + ` <i class="fa-solid fa-download"></i></a></div>
+				<div class="sound-row-item-dwn"><a onClick="javascript:downloadBlob('sounds/` + sound_result['sound_id'] + `', '` + sound_result['sound_id'] + '-' + sound_result['sound_name'].replace(/ /g, "-") + `.mp3')" target="_blank">` + sound_result['sound_downloads'] + ` <i class="fa-solid fa-download"></i></a></div>
 				<div class="sound-row-item-share"><i class="fa-solid fa-share"></i></div>
 				<div class="sound-row-item-dropdown"><i class="fa-solid fa-ellipsis-vertical"></i></div>
 			</div>
@@ -565,85 +713,133 @@
 			element_sounds.innerHTML += div;
 			});
 		}
-	
-
-	async function setVolume(new_value) {
-		if (new_value){
-			localStorage.setItem('volume', new_value);
+		async function initializeWaveform(element, sound_id, src) {
+			if (wavesurfers['current']['obj']){
+				wavesurfers['current']['obj'].destroy();
+			}
+			delete wavesurfers[src];
+			var wavesurfer = WaveSurfer.create({
+				container: element,
+				height: 30,
+				waveColor: '#c7cace',
+				progressColor: '#848894'
+			});
+			wavesurfer.on('finish', function () {
+				playSound(sound_id, true);
+			});
+			wavesurfers[src] = wavesurfer;
+			wavesurfers['current']['obj'] = wavesurfer;
+			wavesurfers['current']['sound_id'] = sound_id;
+			setVolume(null)
+			wavesurfer.load(src);
 		}
-		var wavesurfer = wavesurfers['current']['obj'];
-		if (wavesurfer){
-			wavesurfer.setVolume(localStorage.getItem('volume'));
+		async function deleteWavesurfers() {
+			if (wavesurfers['current']['obj']){
+				wavesurfers['current']['obj'].destroy();
+			}
+			wavesurfers = {'current': {'sound_id': null, 'obj': null}};
 		}
-	}
-
-	async function deleteWavesurfers() {
-		if (wavesurfers['current']['obj']){
-			wavesurfers['current']['obj'].destroy();
+		async function setVolume(new_value) {
+			if (new_value){
+				localStorage.setItem('volume', new_value);
+			}
+			var wavesurfer = wavesurfers['current']['obj'];
+			if (wavesurfer){
+				wavesurfer.setVolume(localStorage.getItem('volume'));
+			}
 		}
-		wavesurfers = {'current': {'sound_id': null, 'obj': null}};
-	}
-
-	async function initializeWaveform(element, sound_id, src) {
-		if (wavesurfers['current']['obj']){
-			wavesurfers['current']['obj'].destroy();
-		}
-		delete wavesurfers[src];
-		var wavesurfer = WaveSurfer.create({
-			container: element,
-			height: 30,
-			waveColor: '#c7cace',
-			progressColor: '#848894'
-		});
-		wavesurfer.on('finish', function () {
-			playSound(sound_id, true);
-		});
-		wavesurfers[src] = wavesurfer;
-		wavesurfers['current']['obj'] = wavesurfer;
-		wavesurfers['current']['sound_id'] = sound_id;
-		setVolume(null)
-		wavesurfer.load(src);
-	}
-
-	async function playSound(sound_id, pause = false){
-		var soundBlockElement = document.querySelector('.sound-block-content[sound_id="'+sound_id+'"]');
-		var soundTimelineElement = soundBlockElement.querySelector('.sound-row-item-timeline');
-		//soundTimelineElement.innerHTML = ``;
-		var wavesurfer = wavesurfers['current'];
-		if (pause) {
-			soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
-			return wavesurfer['obj'].pause();
-		}
-		if (wavesurfer['sound_id'] == sound_id){
-			if (wavesurfer['obj'].isPlaying()){
+		async function playSound(sound_id, pause = false){
+			var soundBlockElement = document.querySelector('.sound-block-content[sound_id="'+sound_id+'"]');
+			var soundTimelineElement = soundBlockElement.querySelector('.sound-row-item-timeline');
+			//soundTimelineElement.innerHTML = ``;
+			var wavesurfer = wavesurfers['current'];
+			if (pause) {
 				soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
-				wavesurfer['obj'].pause();
+				return wavesurfer['obj'].pause();
+			}
+			if (wavesurfer['sound_id'] == sound_id){
+				if (wavesurfer['obj'].isPlaying()){
+					soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
+					wavesurfer['obj'].pause();
+				} else {
+					soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-pause"></i>';
+					wavesurfer['obj'].play();
+				}
 			} else {
-				soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-pause"></i>';
+				var previousWavesurfer = wavesurfers['current'];
+				if (previousWavesurfer['sound_id']){
+					document.querySelector('.sound-block-content[sound_id="'+previousWavesurfer['sound_id']+'"]').querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
+				}
+				initializeWaveform(soundTimelineElement, sound_id, 'sound/'+sound_id);
+				wavesurfer = wavesurfers['current'];
 				wavesurfer['obj'].play();
+				soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-pause"></i>';
 			}
-		} else {
-			var previousWavesurfer = wavesurfers['current'];
-			if (previousWavesurfer['sound_id']){
-				document.querySelector('.sound-block-content[sound_id="'+previousWavesurfer['sound_id']+'"]').querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
-			}
-			initializeWaveform(soundTimelineElement, sound_id, 'sound/'+sound_id);
-			wavesurfer = wavesurfers['current'];
-			wavesurfer['obj'].play();
-			soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-pause"></i>';
 		}
-	}
-	async function openMenuUpload(){
-		var profileModal = document.querySelector('profileModal');
-		profileModal.innerHTML = ``;
-		
-	}
-	async function openMenuProfile(){
-		var profileModal = document.querySelector('profileModal');
-		profileModal.innerHTML = ``;
 
-	}
-	searchResults();
+		async function downloadBlob(url, filename) {
+			try {
+				var resp = await fetch(url);
+				var blob = await resp.blob();
+				var a = document.createElement("a");
+				var objectUrl = window.URL.createObjectURL(blob);
+				a.href = objectUrl;
+				a.download = filename;
+				a.click();
+				window.URL.revokeObjectURL(objectUrl);
+			} catch (error) {
+				console.error("Error downloading Sound:", error);
+			}
+		}
+		async function openMenuUpload(){
+			var profileModal = document.querySelector('.profileModal');
+			profileModal.innerHTML = ``;
+		}
+		async function openMenuProfile(){
+			if (states.modal){
+				profileModal.classList.add("hidden");
+				overlay.classList.add("hidden");
+			} else {
+				profileModal.classList.remove("hidden");
+				overlay.classList.remove("hidden");
+			}
+			states.modal = !states.modal;
+		}
+		document.addEventListener("keydown", function (e) {
+			if (e.key === "Escape" && !profileModal.classList.contains("hidden")) {
+				openMenuProfile();
+			}
+		});
+		document.querySelector(".overlay").addEventListener("click", openMenuProfile);
+		document.querySelector(".profileModal .btn-close").addEventListener("click", openMenuProfile);
+
+
+		async function sendLogin(){
+			var email = document.querySelector('.profileModal .email');
+			var password = document.querySelector('.profileModal .password');
+			email.value = email.value.trim();
+			password.value = password.value.trim();
+			
+			var resp = await req_post('api/login', {[email.value.includes('@') ? 'email' : 'username']: email.value, password: password.value});
+			if (resp.status){
+				localStorage.setItem('token', resp.token);
+				showNotification('Login successful', '#2CB32C');
+				setTimeout(() => {
+					location.href = '/';
+				}, 1000);
+			} else {
+				showNotification(resp.message, '#D22B2B')
+			}
+			console.log(resp);
+		}
+		togglePassword.addEventListener('click', function (e) {
+			var password = togglePassword.previousElementSibling;
+			password.setAttribute('type', password.getAttribute('type') === 'password' ? 'text' : 'password');
+			this.classList.toggle('fa-eye');
+		});
+
+
+
 	</script>
 </body>
 </html>
