@@ -31,6 +31,10 @@ async def on_startup():
 async def route_index(request: Request, Authorization: str = Cookie(None)):
 	return templates.TemplateResponse('index.html', {'request': request})
 
+@app.get('/popular')
+async def route_index(request: Request, Authorization: str = Cookie(None)):
+	return templates.TemplateResponse('popular.html', {'request': request})
+
 @app.get('/test')
 async def route_index(request: Request, Authorization: str = Cookie(None)):
 	return templates.TemplateResponse('test.html', {'request': request})

@@ -441,7 +441,7 @@
 		<div class="sidebar-buttons">
 			<button class="sidebar-button-mainpage"><i class="sidebar-icon fa fa-bars"></i>FrontPage</button>
 			<button class="sidebar-button-trending"><i class="sidebar-icon fa-solid fa-arrow-up"></i>Trending</button>
-			<button class="sidebar-button-popular"><i class="sidebar-icon fa-solid fa-fire"></i>Popular</button>
+			<button class="sidebar-button-popular" onclick="redirectToAnotherPage()"><i class="sidebar-icon fa-solid fa-fire"></i>Popular</button>
 			<button class="sidebar-button-upload" onclick="openMenuUpload()"><i class="sidebar-icon fa-solid fa-upload"></i>Upload</button>
 		</div>
 		<div class="sidebar-volume">
@@ -644,6 +644,10 @@
 
 	}
 	searchResults();
+
+	function redirectToAnotherPage() {
+    window.location.href = "popular";
+}
 	</script>
 </body>
 </html>

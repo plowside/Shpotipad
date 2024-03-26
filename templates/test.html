@@ -3,71 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modal Window</title>
+<title>Боковое меню с кнопками</title>
 <style>
-	body {
-		font-family: Arial, sans-serif;
-		font-size: 20px;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.5);
-	}
-
-	.modal {
-		background-color: #f0f0f0;
-		padding: 20px;
-		border-radius: 10px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-		text-align: center;
-	}
-
-	.modal input {
-		width: 100%;
-		padding: 10px;
-		margin-bottom: 10px;
-		border-radius: 5px;
-		border: 1px solid #ccc;
-		box-sizing: border-box;
-		outline-color: green;
-	}
-
-	.modal button {
-		padding: 10px 20px;
-		border: none;
-		border-radius: 5px;
-		background-color: #4CAF50;
-		color: white;
-		cursor: pointer;
-	}
-
-	.modal .createAccount {
-		background-color: transparent;
-		color: black;
-	}
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .sidebar {
+        height: 100%;
+        width: 200px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #f0f0f0;
+        padding-top: 20px;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        padding: 10px 20px;
+        text-align: left;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .sidebar button:hover {
+        background-color: #ddd;
+    }
+    .content {
+        margin-left: 200px; /* Ширина бокового меню */
+        padding: 20px;
+    }
 </style>
 </head>
 <body>
 
-<div class="modal">
-	<h2>Login</h2>
-	<div style="margin-top: 10px; border-radius: 10px; border: black;">
-		<button class="createAccount">Create Account</button>
-	</div>
-	<input type="text" placeholder="Email/Username">
-	<input type="password" placeholder="Password">
-	<button>Login</button>
+<div class="sidebar">
+    <button>Кнопка 1</button>
+    <button>Кнопка 2</button>
+    <button>Кнопка 3</button>
+    <button>Кнопка 4</button>
+    <button>Кнопка 5</button>
 </div>
 
-<script>
-	document.querySelector('.createAccount').addEventListener('click', function() {
-		alert('Create Account button clicked!');
-		// Действия при нажатии на кнопку "Create Account"
-	});
-</script>
+<div class="content">
+    <h1>Основное содержимое</h1>
+    <p>Это основное содержимое страницы.</p>
+</div>
 
 </body>
 </html>
