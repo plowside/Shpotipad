@@ -46,7 +46,22 @@
 			overflow: hidden;
 			box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 		}
-
+		#sidebar a {
+			text-decoration: none;
+		}
+		.sidebar-logo {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 20px;
+			margin-top: 10px;
+		}
+		.sidebar-logo-text {
+			margin-left: 15px;
+			font-size: 35px;
+			color: black;
+		}
 		.sidebar-buttons {
 			flex-grow: 1;
 		}
@@ -587,7 +602,7 @@
 			border: none;
 			font-weight: 600;
 		}
-		.profileModal .login-block {
+		.profileModal {
 			text-align: center;
 		}
 		.profileModal input {
@@ -603,11 +618,17 @@
 		.profileModal input.password {
 			display: inline-block;
 		}
-
-		.profileModal i.fa-eye-slash {
+		.profileModal .login-block i.fa-eye-slash {
 			position: absolute;
 			margin-left: -100px;
 			bottom: 28%;
+			right: 7%;
+			cursor: pointer;
+		}
+		.profileModal .reg-block i.fa-eye-slash {
+			position: absolute;
+			margin-left: -100px;
+			bottom: 25%;
 			right: 7%;
 			cursor: pointer;
 		}
@@ -674,12 +695,18 @@
 			visibility: visible;
 			transition: opacity .3s ease, visibility .3s linear;
 		}
+		.hidden {
+			display: none;
+		}
 	</style>
 </head>
 <body>
 
 	<div id="sidebar">
-		<img src="static/images/logo.png" alt="Logo" style="width: 100%; margin-bottom: 20px;">
+		<a href="/" class="sidebar-logo">
+			<img src="static/images/fresh-logo.png" alt="Logo" style="width: 15%;">
+			<span class="sidebar-logo-text">Shpotipad</span>
+		</a>
 		<div class="sidebar-buttons">
 			<button class="sidebar-button-mainpage sidebar-cur-page"><i class="sidebar-icon fa fa-bars"></i>FrontPage</button>
 			<button class="sidebar-button-trending"><i class="sidebar-icon fa-solid fa-arrow-up"></i>Trending</button>
@@ -708,15 +735,26 @@
 
 	<section class="profileModal">
 		<button class="btn-close">⨉</button>
-		<h2>Sign In</h2>
 		<div class="login-block">
+			<h2>Sign In</h2>
 			<div style="text-align: left;">
-				<button class="createAccount">Create Account</button>
+				<button class="createAccount" onclick="profileModalCreateAccount()">Create Account</button>
 			</div>
 			<input type="text" class="email" placeholder="Email/Username">
 			<input type="password" class="password" placeholder="Password">
 			<i class="togglePassword fa-regular fa-eye-slash"></i>
 			<button class="login-button" onclick="sendLogin()">Login</button>
+		</div>
+		<div class="reg-block hidden">
+			<h2>Create Account</h2>
+			<div style="text-align: left;">
+				<button class="createAccount" onclick="profileModalCreateAccount()">Create Account</button>
+			</div>
+			<input type="text" class="username" minlength="3" maxlength="32" placeholder="Username" onkeypress="return isUK(event)">
+			<input type="email" class="email" placeholder="Email">
+			<input type="password" class="password" minlength="4" maxlength="128" placeholder="Password">
+			<i class="togglePassword fa-regular fa-eye-slash"></i>
+			<button class="login-button" onclick="sendReg()">Create</button>
 		</div>
 	</section>
 	<div class="overlay"></div>
@@ -730,7 +768,7 @@
 		var overlay = document.querySelector('.overlay');
 		var sounds_state = 'new';
 		var wavesurfers = {'current': {'sound_id': null, 'obj': null}};
-		var states = {modal: false}
+		var states = {modal: {login: false, reg: false}}
 
 		function showNotification(text, color) {
 			var notification = document.createElement('div');
@@ -784,6 +822,11 @@
 
 		searchResults();
 
+
+		function isUK(event) {
+			console.log('abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase()));
+			return 'abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase());
+		}
 
 
 		let timeoutId;
@@ -950,15 +993,37 @@
 			profileModal.innerHTML = ``;
 		}
 		async function openMenuProfile(){
-			if (states.modal){
+			if (states.modal.login){
 				profileModal.classList.remove("active");
 				overlay.classList.remove("active");
 			} else {
 				profileModal.classList.add("active");
 				overlay.classList.add("active");
 			}
-			states.modal = !states.modal;
+			states.modal.login = !states.modal.login;
 		}
+		async function profileModalCreateAccount(){
+			if (states.modal.reg){
+				profileModal.querySelector('.login-block').classList.remove("hidden");
+				profileModal.querySelector('.reg-block').classList.add("hidden");
+			} else {
+				profileModal.querySelector('.login-block').classList.add("hidden");
+				profileModal.querySelector('.reg-block').classList.remove("hidden");
+			}
+			states.modal.reg = !states.modal.reg;
+		}
+
+
+
+
+
+
+
+
+
+
+
+
 		document.addEventListener("keydown", function (e) {
 			if (e.key === "Escape" && !profileModal.classList.contains("active")) {
 				openMenuProfile();
@@ -969,12 +1034,32 @@
 
 
 		async function sendLogin(){
-			var email = document.querySelector('.profileModal .email');
-			var password = document.querySelector('.profileModal .password');
+			var email = document.querySelector('.profileModal .login-block .email');
+			var password = document.querySelector('.profileModal .login-block .password');
 			email.value = email.value.trim();
 			password.value = password.value.trim();
 			
 			var resp = await req_post('api/login', {[email.value.includes('@') ? 'email' : 'username']: email.value, password: password.value});
+			if (resp.status){
+				localStorage.setItem('token', resp.token);
+				showNotification('Login successful', '#2CB32C');
+				setTimeout(() => {
+					location.href = '/';
+				}, 1000);
+			} else {
+				showNotification(resp.message, '#D22B2B')
+			}
+			console.log(resp);
+		}
+		async function sendReg(){
+			var username = document.querySelector('.profileModal  .reg-block .username');
+			var email = document.querySelector('.profileModal  .reg-block .email');
+			var password = document.querySelector('.profileModal  .reg-block .password');
+			username.value = email.value.trim();
+			email.value = email.value.trim();
+			password.value = password.value.trim();
+			
+			var resp = await req_post('api/register', {username: username.value, email: email.value, password: password.value});
 			if (resp.status){
 				localStorage.setItem('token', resp.token);
 				showNotification('Login successful', '#2CB32C');
