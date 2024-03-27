@@ -44,6 +44,34 @@ async def router_me(request: Request, response: Response, Authorization: str = H
 
 	return {'status': True, 'code': 200, 'user': dict(user)}
 
+@router.put('/me')
+async def router_me(request: Request, response: Response, payload: UserUpdate, Authorization: str = Header(None)):
+	user = jwt_token_check(Authorization)
+	if not user:
+		return {'status': False, 'code': 401, 'message': 'Unauthorized'}
+	user = user['user']
+
+	payload.password = None if payload.password in ('', ' ') else payload.password
+	print(payload)
+	if not (3 <= len(payload.username) <= 32):
+		if len(payload.username) > 32:
+			return {'status': False, 'code': 409, 'message': 'Max. username\'s length is 32 characters'}
+		else:
+			return {'status': False, 'code': 409, 'message': 'Min. username\'s length is 3 characters'}
+	elif payload.password and (not (4 <= len(payload.password) <= 128) or not (check_string(payload.password))):
+		if not check_string(payload.password):
+			return {'status': False, 'code': 409, 'message': 'Password contains banned characters'}
+		elif len(payload.password) > 128:
+			return {'status': False, 'code': 409, 'message': 'Max. password\'s length is 128 characters'}
+		else:
+			return {'status': False, 'code': 409, 'message': 'Min. password\'s length is 4 characters'}
+
+	_db = database_driver()
+	user = _db.update_user(user, payload)
+
+	return {'status': True, 'code': 200, 'user': dict(user)}
+
+
 
 @router.post('/sound')
 def router_upload_sound(request: Request, response: Response, sound_file: UploadFile, sound_data: str = Form(...), Authorization: str = Header(None)):

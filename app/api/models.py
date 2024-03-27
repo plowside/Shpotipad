@@ -24,6 +24,11 @@ class UserRegister(BaseModel):
 	email: str
 	password: str
 
+class UserUpdate(BaseModel):
+	username: str = None
+	email: str = None
+	password: str = None
+
 class JWTTokenPayload(BaseModel):
 	user_id: int
 	k: str

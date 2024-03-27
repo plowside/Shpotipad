@@ -82,6 +82,23 @@ class database_driver:
 		self.con.commit()
 
 
+
+	def update_user(self, user, new_user):
+		sql_query = [x[0] for x in new_user if x[1]]
+		sql_query_v = [x[1] for x in new_user if x[1]]
+
+		print(f'UPDATE users SET ({", ".join(sql_query) if len(sql_query) > 1 else sql_query[0]}) = ({", ".join(sql_query_v) if len(sql_query_v) > 1 else "?"}) WHERE user_id = ?', [sql_query_v, user.user_id])
+		self.cur.execute(f'UPDATE users SET ({", ".join(sql_query) if len(sql_query) > 1 else sql_query[0]}) = ({", ".join(list("?"*len(sql_query_v))) if len(sql_query_v) > 1 else "?"}) WHERE user_id = ?', [*sql_query_v, user.user_id])
+		self.con.commit()
+
+		return UserSafe(**self.cur.execute('SELECT * FROM users WHERE user_id = ?', [user.user_id]).fetchone())
+
+
+
+
+
+
+
 	async def get_sounds(self, user_id = None, q=None, limit=None, state=None, tag=None):
 		if tag is not None:
 			sql_query = '''SELECT s.*, 
@@ -140,8 +157,6 @@ class database_driver:
 		return SoundResponse(**sound).dict()
 
 
-
-
 	def upload_sound(self, sound, sound_file):
 		sound_id = self.cur.execute('SELECT seq AS q FROM sqlite_sequence WHERE name = "sounds"').fetchone()
 		sound_id = sound_id['q'] + 1 if sound_id else 1
@@ -171,7 +186,6 @@ class database_driver:
 
 		return {'status': True, 'sound': sound}
 
-
 	def update_sound(self, sound, user_id):
 		if sound.sound_mark != None:
 			if sound.sound_mark in (0, 1):
@@ -188,6 +202,9 @@ class database_driver:
 
 		self.con.commit()
 		return self.get_sound(user_id, sound.sound_id)
+
+
+
 
 	def __enter__(self):
 		return self

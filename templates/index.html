@@ -632,6 +632,13 @@
 			right: 7%;
 			cursor: pointer;
 		}
+		.profileModal .update-block i.fa-eye-slash {
+			position: absolute;
+			margin-left: -100px;
+			bottom: 25%;
+			right: 7%;
+			cursor: pointer;
+		}
 		.profileModal .login-button {
 			font-size: 20px;
 			padding: 10px 25px;
@@ -718,7 +725,7 @@
 			<input type="range" id="volumeControl" min="0" max="1" value="0.3" step="0.01" oninput="setVolume(this.value)">
 		</div>
 		<button class="sidebar-profile" onclick="openMenuProfile()">
-			<i class="fa-regular fa-user"></i>
+			<i class="fa-solid fa-right-to-bracket"></i>
 			<p>Log In</p>
 		</div>
 	</div>
@@ -740,21 +747,38 @@
 			<div style="text-align: left;">
 				<button class="createAccount" onclick="profileModalCreateAccount()">Create Account</button>
 			</div>
-			<input type="text" class="email" placeholder="Email/Username">
-			<input type="password" class="password" placeholder="Password">
-			<i class="togglePassword fa-regular fa-eye-slash"></i>
-			<button class="login-button" onclick="sendLogin()">Login</button>
+			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendLogin() }">
+				<input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" required>
+				<input type="password" class="password" name="password" placeholder="Password" autocomplete="on | off" required>
+				<i class="togglePassword fa-regular fa-eye-slash"></i>
+				<button type="submit" class="login-button">Login</button>
+			</form>
 		</div>
 		<div class="reg-block hidden">
 			<h2>Create Account</h2>
 			<div style="text-align: left;">
-				<button class="createAccount" onclick="profileModalCreateAccount()">Create Account</button>
+				<button class="createAccount" onclick="profileModalCreateAccount()">Log in</button>
 			</div>
-			<input type="text" class="username" minlength="3" maxlength="32" placeholder="Username" onkeypress="return isUK(event)">
-			<input type="email" class="email" placeholder="Email">
-			<input type="password" class="password" minlength="4" maxlength="128" placeholder="Password">
-			<i class="togglePassword fa-regular fa-eye-slash"></i>
-			<button class="login-button" onclick="sendReg()">Create</button>
+			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }">
+				<input type="text" class="username" name="username" minlength="3" maxlength="32" placeholder="Username" onkeypress="return isUK(event)" autocomplete="on | off" required>
+				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onkeypress="return isUK(event)" required>
+				<input type="password" class="password" name="password" minlength="4" maxlength="128" placeholder="Password" onkeypress="return isPK(event)" autocomplete="on | off" required>
+				<i class="togglePassword fa-regular fa-eye-slash"></i>
+				<button type="submit" class="login-button">Create</button>
+			</form>
+		</div>
+		<div class="update-block hidden">
+			<h2>Update Profile</h2>
+			<div style="text-align: left;">
+				<button class="createAccount" onclick="logout()">Logout</button>
+			</div>
+			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { updateProfile() }">
+				<input type="text" class="username" name="username" minlength="3" maxlength="32" placeholder="Username" onkeypress="return isUK(event)" autocomplete="on | off" required>
+				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onkeypress="return isUK(event)" required disabled>
+				<input type="password" class="password" name="password" minlength="4" maxlength="128" placeholder="Password" onkeypress="return isPK(event)" autocomplete="on | off">
+				<i class="togglePassword fa-regular fa-eye-slash"></i>
+				<button type="submit" class="login-button">Update</button>
+			</form>
 		</div>
 	</section>
 	<div class="overlay"></div>
@@ -764,11 +788,12 @@
 		var element_search_input = document.querySelector('.sidebar-search input');
 		var element_sounds = document.querySelector('.sounds');
 		var profileModal = document.querySelector('.profileModal');
-		var togglePassword = document.querySelector('.togglePassword');
+		var togglePassword = document.querySelectorAll('.togglePassword');
 		var overlay = document.querySelector('.overlay');
 		var sounds_state = 'new';
 		var wavesurfers = {'current': {'sound_id': null, 'obj': null}};
 		var states = {modal: {login: false, reg: false}}
+		var me = null;
 
 		function showNotification(text, color) {
 			var notification = document.createElement('div');
@@ -824,10 +849,11 @@
 
 
 		function isUK(event) {
-			console.log('abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase()));
 			return 'abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase());
 		}
-
+		function isPK(event) {
+			return 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'.includes(event.key.toLowerCase());
+		}
 
 		let timeoutId;
 		element_search_input.addEventListener('input', function() {
@@ -1013,17 +1039,6 @@
 			states.modal.reg = !states.modal.reg;
 		}
 
-
-
-
-
-
-
-
-
-
-
-
 		document.addEventListener("keydown", function (e) {
 			if (e.key === "Escape" && !profileModal.classList.contains("active")) {
 				openMenuProfile();
@@ -1032,10 +1047,10 @@
 		document.querySelector(".overlay").addEventListener("click", openMenuProfile);
 		document.querySelector(".profileModal .btn-close").addEventListener("click", openMenuProfile);
 
-
 		async function sendLogin(){
 			var email = document.querySelector('.profileModal .login-block .email');
 			var password = document.querySelector('.profileModal .login-block .password');
+
 			email.value = email.value.trim();
 			password.value = password.value.trim();
 			
@@ -1045,7 +1060,7 @@
 				showNotification('Login successful', '#2CB32C');
 				setTimeout(() => {
 					location.href = '/';
-				}, 1000);
+				}, 2000);
 			} else {
 				showNotification(resp.message, '#D22B2B')
 			}
@@ -1055,14 +1070,15 @@
 			var username = document.querySelector('.profileModal  .reg-block .username');
 			var email = document.querySelector('.profileModal  .reg-block .email');
 			var password = document.querySelector('.profileModal  .reg-block .password');
-			username.value = email.value.trim();
+
+			username.value = username.value.trim();
 			email.value = email.value.trim();
 			password.value = password.value.trim();
 			
 			var resp = await req_post('api/register', {username: username.value, email: email.value, password: password.value});
 			if (resp.status){
 				localStorage.setItem('token', resp.token);
-				showNotification('Login successful', '#2CB32C');
+				showNotification('Account created', '#2CB32C');
 				setTimeout(() => {
 					location.href = '/';
 				}, 1000);
@@ -1071,12 +1087,51 @@
 			}
 			console.log(resp);
 		}
-		togglePassword.addEventListener('click', function (e) {
-			var password = togglePassword.previousElementSibling;
-			password.setAttribute('type', password.getAttribute('type') === 'password' ? 'text' : 'password');
-			this.classList.toggle('fa-eye');
-		});
+		async function updateProfile(){
+			var username = document.querySelector('.profileModal  .update-block .username');
+			var email = document.querySelector('.profileModal  .update-block .email');
+			var password = document.querySelector('.profileModal  .update-block .password');
 
+			username.value = username.value.trim();
+			email.value = email.value.trim();
+			password.value = password.value.trim();
+			
+			var resp = await req_put('api/me', {username: username.value, email: email.value, password: password.value});
+			if (resp.status){
+				me = resp.user;
+				showNotification('Profile updated', '#2CB32C');
+				initializeProfile();
+			} else {
+				showNotification(resp.message, '#D22B2B')
+			}
+			console.log(resp);
+		}
+		togglePassword.forEach(function(el){
+			el.addEventListener('click', function (e) {
+				var password = el.previousElementSibling;
+				password.setAttribute('type', password.getAttribute('type') === 'password' ? 'text' : 'password');
+				this.classList.toggle('fa-eye');
+			});
+		});
+		async function logout(){
+			localStorage.removeItem('token');
+			location.reload();
+		}
+		async function initializeProfile(){
+			resp = await req_get('api/me');
+			if (resp.status){
+				me = resp.user;
+				var profile = document.querySelector('.sidebar-profile');
+				profile.innerHTML = `<i class="fa-regular fa-user"></i><p>`+ me.username +`</p>`;
+				profileModal.querySelector('.login-block').classList.add("hidden");
+				profileModal.querySelector('.reg-block').classList.add("hidden");
+				var profile_block = profileModal.querySelector('.update-block');
+				profile_block.classList.remove('hidden');
+				profile_block.querySelector('.username').value = me.username;
+				profile_block.querySelector('.email').value = me.email;
+			}
+		}
+		initializeProfile();
 
 
 	</script>
