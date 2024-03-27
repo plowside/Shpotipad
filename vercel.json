@@ -9,10 +9,6 @@
 		{
 			"src":"/(.*)",
 			"dest":"app/main.py"
-		},
-		{
-			"src":"/(.*)",
-			"dest":"app/api/routers.py"
 		}
 	]
 }
