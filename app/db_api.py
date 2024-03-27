@@ -66,8 +66,8 @@ class database_driver:
 					tag_id INTEGER DEFAULT (0)
 				)
 			''',
-			'sounds_stats': '''
-				CREATE TABLE IF NOT EXISTS sounds_stats(
+			'sound_stats': '''
+				CREATE TABLE IF NOT EXISTS sound_stats(
 					sound_id INTEGER,
 					user_id INTEGER,
 					stat_id INTEGER
@@ -82,24 +82,64 @@ class database_driver:
 		self.con.commit()
 
 
-	async def get_sounds(self, q, limit, state):
-		sql_query = '''SELECT s.*, GROUP_CONCAT(st.tag_name || '|' || st.tag_id) AS sound_tags FROM sounds AS s LEFT JOIN sounds_tags AS st ON st.sound_id = s.sound_id'''
-		params = []
+	async def get_sounds(self, user_id = None, q=None, limit=None, state=None, tag=None):
+		if tag is not None:
+			sql_query = '''SELECT s.*, 
+									GROUP_CONCAT(st.tag_name || '|' || st.tag_id) AS sound_tags,
+									(SELECT COUNT(*) FROM sound_stats WHERE sound_id = s.sound_id AND stat_id = 1) -
+									(SELECT COUNT(*) FROM sound_stats WHERE sound_id = s.sound_id AND stat_id = 0) AS sound_stats,
+									(SELECT stat_id FROM sound_stats WHERE sound_id = s.sound_id AND user_id = ?) AS sound_mark
+							FROM sounds AS s 
+							LEFT JOIN sounds_tags AS st 
+							ON st.sound_id = s.sound_id 
+							WHERE st.tag_name = ?'''
+			params = [user_id, tag]
+		else:
+			sql_query = '''SELECT s.*, 
+									GROUP_CONCAT(st.tag_name || '|' || st.tag_id) AS sound_tags,
+									(SELECT COUNT(*) FROM sound_stats WHERE sound_id = s.sound_id AND stat_id = 1) -
+									(SELECT COUNT(*) FROM sound_stats WHERE sound_id = s.sound_id AND stat_id = 0) AS sound_stats,
+									(SELECT stat_id FROM sound_stats WHERE sound_id = s.sound_id AND user_id = ?) AS sound_mark
+							FROM sounds AS s 
+							LEFT JOIN sounds_tags AS st 
+							ON st.sound_id = s.sound_id'''
+			params = [user_id]
 
-		if q:
-			params.append(q)
-			sql_query += f' WHERE s.sound_name LIKE \'%\' || ? || \'%\''
-		sql_query += f' GROUP BY s.sound_id'
+			if q:
+				params.extend([q, q])
+				sql_query += ' WHERE s.sound_name LIKE \'%\' || ? || \'%\' OR st.tag_name LIKE \'%\' || ? || \'%\''
+				
+		sql_query += ' GROUP BY s.sound_id'
+
 		if limit:
 			limit = limit.split(',')
 			sql_query += f' LIMIT {limit[0]}' if len(limit) == 1 else f' LIMIT {limit[1]} OFFSET {limit[0]}'
 
-
 		sounds = self.cur.execute(sql_query, params).fetchall()
+		
 		for x in sounds:
-			x['sound_stats'] = self.cur.execute('SELECT (SELECT COUNT(*) FROM sounds_stats WHERE sound_id = ? AND stat_id = 1) - (SELECT COUNT(*) FROM sounds_stats WHERE sound_id = ? AND stat_id = 0) AS q', [x['sound_id'], x['sound_id']]).fetchone()['q']
 			x['sound_tags'] = x['sound_tags'].split(',')
-		return [SoundInDB(**x).dict() for x in sounds]
+
+		return [SoundResponse(**x).dict() for x in sounds]
+
+	def get_sound(self, user_id, sound_id):
+		sql_query = '''SELECT s.*, 
+								GROUP_CONCAT(st.tag_name || '|' || st.tag_id) AS sound_tags,
+								(SELECT COUNT(*) FROM sound_stats WHERE sound_id = s.sound_id AND stat_id = 1) -
+								(SELECT COUNT(*) FROM sound_stats WHERE sound_id = s.sound_id AND stat_id = 0) AS sound_stats,
+								(SELECT stat_id FROM sound_stats WHERE sound_id = s.sound_id AND user_id = ?) AS sound_mark
+						FROM sounds AS s 
+						LEFT JOIN sounds_tags AS st 
+						ON st.sound_id = s.sound_id
+						WHERE s.sound_id = ?'''
+		params = [user_id, sound_id]
+		sql_query += ' GROUP BY s.sound_id'
+		sound = self.cur.execute(sql_query, params).fetchone()
+	
+		sound['sound_tags'] = sound['sound_tags'].split(',')
+		return SoundResponse(**sound).dict()
+
+
 
 
 	def upload_sound(self, sound, sound_file):
@@ -131,6 +171,23 @@ class database_driver:
 
 		return {'status': True, 'sound': sound}
 
+
+	def update_sound(self, sound, user_id):
+		if sound.sound_mark != None:
+			if sound.sound_mark in (0, 1):
+				if self.cur.execute('SELECT * FROM sound_stats WHERE (sound_id, user_id) = (?, ?)', [sound.sound_id, user_id]).fetchone():
+					sql_query = 'UPDATE sound_stats SET stat_id = ? WHERE (sound_id, user_id) = (?, ?)'
+					params = [sound.sound_mark, sound.sound_id, user_id]
+				else:
+					sql_query = 'INSERT INTO sound_stats VALUES (?, ?, ?)'
+					params = [sound.sound_id, user_id, sound.sound_mark]
+			else:
+				sql_query = 'DELETE FROM sound_stats WHERE (sound_id, user_id) = (?, ?)'
+				params = [sound.sound_id, user_id]
+			self.cur.execute(sql_query, params)
+
+		self.con.commit()
+		return self.get_sound(user_id, sound.sound_id)
 
 	def __enter__(self):
 		return self

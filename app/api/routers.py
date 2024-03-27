@@ -46,7 +46,7 @@ async def router_me(request: Request, response: Response, Authorization: str = H
 
 
 @router.post('/sound')
-def router_upload_sounds(request: Request, response: Response, sound_file: UploadFile, sound_data: str = Form(...), Authorization: str = Header(None)):
+def router_upload_sound(request: Request, response: Response, sound_file: UploadFile, sound_data: str = Form(...), Authorization: str = Header(None)):
 	user = jwt_token_check(Authorization)
 	if not user:
 		return {'status': False, 'code': 401, 'message': 'Unauthorized'}
@@ -62,12 +62,31 @@ def router_upload_sounds(request: Request, response: Response, sound_file: Uploa
 	_db = database_driver()
 	sound = _db.upload_sound(sound, sound_file)
 
-	return sound
+	return {'status': True, 'sound': sound}
+
+@router.put('/sound')
+def router_update_sound(request: Request, response: Response, sound: SoundUpdate, Authorization: str = Header(None)):
+	user = jwt_token_check(Authorization)
+	if not user:
+		return {'status': False, 'code': 401, 'message': 'Unauthorized'}
+	user = user['user']
+
+	_db = database_driver()
+	try:
+		sound = _db.update_sound(sound, user.user_id)
+	except Exception as e:
+		return {'status': False, 'code': 422, 'message': 'Missing data'}
+
+	return {'status': True, 'sound': sound}
+
 
 @router.get('/search')
 async def router_get_sounds(request: Request, response: Response, q: str = None, limit: str = None, state: str = None, Authorization: str = Header(None)):
+	user = jwt_token_check(Authorization)
+	if not user: user_id = None
+	else: user_id = user['user'].user_id
 	if q == '': q = None
 	_db = database_driver()
-	sounds = await _db.get_sounds(q, limit, state)
+	sounds = await _db.get_sounds(user_id, q, limit, state)
 
 	return {'status': True, 'sounds': sounds}

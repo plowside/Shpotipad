@@ -14,7 +14,6 @@ class UserSafe(BaseModel):
 	email: str
 	registration_date: int
 
-
 class UserLogin(BaseModel):
 	username: str = None
 	email: str = None
@@ -43,8 +42,27 @@ class SoundInDB(BaseModel):
 
 	sound_tags: list | None = []
 	sound_stats: int | None = 0
+	sound_mark: int | None = None
+
+class SoundResponse(BaseModel):
+	sound_id: int
+	sound_name: str | None = None
+	sound_downloads: int | None = 0
+	sound_duration: float | None = None
+
+	sound_tags: list | None = []
+	sound_stats: int | None = 0
+	sound_mark: int | None = None
 
 
 class GetSounds(BaseModel):
+	q: str = None
 	state: str = 'new'
 	limit: list = [0, 20]
+	tag: str = None
+
+class SoundUpdate(BaseModel):
+	sound_id: int
+	sound_tags: list = None
+	sound_name: str = None
+	sound_mark: int = None

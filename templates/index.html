@@ -44,13 +44,14 @@
 			left: 0;
 			background-color: #f0f0f0;
 			overflow: hidden;
+			box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 		}
 
 		.sidebar-buttons {
 			flex-grow: 1;
 		}
-
 		.sidebar-button-mainpage, .sidebar-button-trending, .sidebar-button-popular, .sidebar-button-upload {
+			font-size: 20px;
 			display: flex;
 			width: 100%;
 			padding: 15px 10px;
@@ -59,23 +60,27 @@
 			background-color: transparent;
 			cursor: pointer;
 			transition: background-color 0.3s ease;
-			font-size: 20px;
 		}
-		
 		.sidebar-button-mainpage:hover, .sidebar-button-trending:hover, .sidebar-button-popular:hover, .sidebar-button-upload:hover {
-			background-color: #ddd;
+			background-color: rgba(177, 177, 177, .45);
 		}
-		
 		.sidebar-icon {
 			margin-right: 10px;
 		}
-
+		.sidebar-cur-page {
+			background: linear-gradient(90deg, rgba(112, 79, 219, 1) 0%, rgba(115, 127, 223, 1) 50%, rgba(117, 174, 244, 1) 100%);
+			color: #fff;
+			cursor: pointer;
+			transition: all .5s ease;
+		}
+		.sidebar-cur-page:hover {
+			box-shadow: 0 0 0 0.2rem rgba(12,10,62,.25);
+		}
 		.sidebar-search {
 			margin: 0;
 			display: flex;
 			align-items: stretch;
 		}
-
 		.sidebar-search input {
 			flex: 1;
 			padding: 10px;
@@ -87,7 +92,6 @@
 			border-top-left-radius: 10px;
 			border-bottom-left-radius: 10px;
 		}
-
 		.sidebar-search button {
 			padding: 10px;
 			font-size: 16px;
@@ -99,7 +103,6 @@
 			border-bottom-right-radius: 10px;
 			cursor: pointer;
 		}
-
 		.sidebar-volume {
 			display: flex;
 			flex-direction: row;
@@ -110,7 +113,9 @@
 			padding: 10px;
 			font-size: 22px;
 		}
-
+		.sidebar-volume i {
+			font-size: 18px;
+		}
 		.sidebar-profile {
 			display: flex;
 			flex-direction: row;
@@ -125,9 +130,9 @@
 			border-radius: 14px;
 			font-size: 20px;
 			max-height: 50px;
+			transition: background-color 0.3s ease;
 		}
 		.sidebar-profile:hover {
-			transition: background-color 0.3s ease;
 			background-color: rgb(113, 107, 227, .2);
 		}
 		.sidebar-profile:active {
@@ -154,13 +159,76 @@
 			box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 			border-radius: 5px;
 		}
+		.sound-block button {
+			transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color 4.15s ease-in-out,box-shadow .15s ease-in-out;
+			border-color: transparent;
+		}
 		.sound-block a {
 			text-decoration: none;
 		}
 		.sound-block-content {
 			padding: 15px;
 		}
-
+		.sound-block-content:hover .sound-row-item-stats i {
+			opacity: 1;
+		}
+		.sound-row-item-dwn, .sound-row-item-share, .sound-row-item-dropdown {
+			transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+			background-color: transparent;
+			color: #0C0A3E;
+		}
+		.sound-block-content:hover .sound-row-item-dwn, .sound-block-content:hover .sound-row-item-share, .sound-block-content:hover .sound-row-item-dropdown {
+			border-color: #0C0A3E;
+		}
+		.sound-row-item-dwn:hover {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: #fff;
+		}
+		.sound-row-item-share:hover {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: #fff;
+		}
+		.sound-row-item-dropdown:hover {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: #fff;
+		}
+		.sound-row-item-stats-like, .sound-row-item-stats-dislike {
+			transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+			background-color: transparent;
+			color: #0C0A3E;
+		}
+		.sound-block-content:hover .sound-row-item-stats-like, .sound-block-content:hover .sound-row-item-stats-dislike {
+			border-color: #0C0A3E;
+		}
+		.sound-row-item-stats-like:hover {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: green;
+		}
+		.sound-row-item-stats-dislike:hover {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: red;
+		}
+		.sound-row-item-stats-like.active {
+			color: green;
+		}
+		.sound-row-item-stats-dislike.active {
+			color: red;
+		}
+		.sound-block-content:hover .sound-row-item-stats-like.active {
+			transition: all .3s ease;
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+		}
+		.sound-block-content:hover .sound-row-item-stats-dislike.active {
+			transition: all .3s ease;
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+		}
 		.sound-row {
 			display: flex;
 			flex-direction: row;
@@ -184,10 +252,33 @@
 			margin-right: auto;
 		}
 		.sound-row-item-stats {
+			display: flex;
+			align-items: center;
+			flex-direction: row;
 			font-size: 20px;
 			margin-left: auto;
-			padding: 5px;
 			color: #222;
+		}
+		.sound-row-item-stats i {
+			opacity: 0;
+			transition: all .3s ease;
+		}
+		.sound-row-item-stats-like {
+			padding: 0 10px;
+			cursor: pointer;
+			border: 1px solid transparent;
+			border-radius: .25rem;
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
+		}
+		.sound-row-item-stats-dislike {
+			padding: 0 10px;
+			cursor: pointer;
+			border: 1px solid transparent;
+			border-radius: .25rem;
+			border-bottom-left-radius: 0;
+			border-top-left-radius: 0;
+			margin-right: 5px;
 		}
 		.sound-row-play {
 			display: flex;
@@ -253,6 +344,11 @@
 			justify-content: center;
 			align-items: center;
 		}
+		.sound-row-btns {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+		}
 		.sound-row-item-addtos {
 			outline: none;
 			border: none;
@@ -275,19 +371,28 @@
 			background-color: rgba(116,124,236, .3);
 		}
 		.sound-row-item-dwn {
-			margin-left: auto;
-			padding: 5px;
+			padding: 8px;
 			cursor: pointer;
+			margin-left: 10px;
+			border: 1px solid transparent;
+			border-radius: .25rem;
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
 		}
 		.sound-row-item-share {
-			margin-left: auto;
-			padding: 5px;
+			padding: 8px;
 			cursor: pointer;
+			border: 1px solid transparent;
+			border-radius: 0;
 		}
 		.sound-row-item-dropdown {
-			margin: 0px 5px 0px auto;
-			padding: 5px;
+			padding: 8px 12px;
 			cursor: pointer;
+			margin-right: 5px;
+			border: 1px solid transparent;
+			border-radius: .25rem;
+			border-bottom-left-radius: 0;
+			border-top-left-radius: 0;
 		}
 	
 
@@ -300,123 +405,117 @@
 			background-color: transparent;
 
 			&:focus {
-				outline-color: #f8b195;
+				outline-color: #a195ea;
 			}
 		}
-
 		input[type="range"]::-webkit-slider-runnable-track {
 			-webkit-appearance: none;
 			appearance: none;
 			height: 3px;
-			background: rgb(246, 114, 128);
+			background: rgb(112, 79, 219);
 			background: -webkit-linear-gradient(
 				left,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			background: linear-gradient(
 				to right,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			filter: progid:DXImageTransform.Microsoft.gradient(
-				startColorstr="#f67280",
-				endColorstr="#355c7d",
+				startColorstr="#704FDB",
+				endColorstr="#75AEF4",
 				GradientType=1
 			);
 		}
-
 		input[type="range"]::-moz-range-track {
 			-moz-appearance: none;
 			appearance: none;
 			height: 3px;
-			background: rgb(246, 114, 128);
+			background: rgb(112, 79, 219);
 			background: -moz-linear-gradient(
 				left,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			background: linear-gradient(
 				to right,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			filter: progid:DXImageTransform.Microsoft.gradient(
-				startColorstr="#f67280",
-				endColorstr="#355c7d",
+				startColorstr="#704FDB",
+				endColorstr="#75AEF4",
 				GradientType=1
 			);
 		}
-
 		input[type="range"]::-ms-track {
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
 			height: 3px;
-			background: rgb(246, 114, 128);
+			background: rgb(112, 79, 219);
 			background: -moz-linear-gradient(
 				left,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			background: -webkit-linear-gradient(
 				left,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			background: linear-gradient(
 				to right,
-				rgba(246, 114, 128, 1) 0%,
-				rgba(192, 108, 132, 1) 50%,
-				rgba(53, 92, 125, 1) 100%
+				rgba(112, 79, 219, 1) 0%,
+				rgba(115, 127, 223, 1) 50%,
+				rgba(117, 174, 244, 1) 100%
 			);
 			filter: progid:DXImageTransform.Microsoft.gradient(
-				startColorstr="#f67280",
-				endColorstr="#355c7d",
+				startColorstr="#704FDB",
+				endColorstr="#75AEF4",
 				GradientType=1
 			);
 		}
 		input[type="range"]::-webkit-slider-thumb {
 			-webkit-appearance: none;
 			appearance: none;
-			border: 2px solid #f8b195;
+			border: 2px solid #a195ea;
 			border-radius: 50%;
 			height: 20px;
 			width: 20px;
 			position: relative;
 			bottom: 8px;
-			background: #222
-			center no-repeat;
+			background: #222 center no-repeat;
 			background-size: 50%;
 			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-			cursor: grab;
+			cursor: e-resize;
 			&:active {
-				cursor: grabbing;
+				cursor: e-resize;
 			}
 		}
-
 		input[type="range"]::-moz-range-thumb {
 			-moz-appearance: none;
 			appearance: none;
-			border: 2px solid #f8b195;
+			border: 2px solid #a195ea;
 			border-radius: 50%;
 			height: 20px;
 			width: 20px;
 			position: relative;
 			bottom: 8px;
-			background: #222
-			center no-repeat;
+			background: #222 center no-repeat;
 			background-size: 50%;
 			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-			cursor: grab;
+			cursor: e-resize;
 			&:active {
-				cursor: grabbing;
+				cursor: e-resize;
 			}
 		}
 
@@ -424,25 +523,22 @@
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
-			border: 2px solid #f8b195;
+			border: 2px solid #a195ea;
 			border-radius: 50%;
 			height: 20px;
 			width: 20px;
 			position: relative;
 			bottom: 8px;
-			background: #222
-			center no-repeat;
+			background: #222 center no-repeat;
 			background-size: 50%;
 			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-			cursor: grab;
+			cursor: e-resize;
 			&:active {
-				cursor: grabbing;
+				cursor: e-resize;
 			}
 		}
 
 	
-
-
 		.profileModal {
 			display: flex;
 			flex-direction: column;
@@ -453,13 +549,21 @@
 			padding: 1.3rem;
 			min-height: 250px;
 			position: fixed;
-			z-index: 2;
+			z-index: 9998;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			background-color: white;
 			border: 1px solid #ddd;
 			border-radius: 15px;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.3s ease, visibility 1s linear 0.3s;
+		}
+		.profileModal.active {
+			opacity: 1;
+			visibility: visible;
+			transition: opacity 0.3s ease, visibility 1s linear;
 		}
 		.profileModal .btn-close {
 			padding: 0.5rem 0.7rem;
@@ -503,7 +607,7 @@
 		.profileModal i.fa-eye-slash {
 			position: absolute;
 			margin-left: -100px;
-			bottom: 28.5%;
+			bottom: 28%;
 			right: 7%;
 			cursor: pointer;
 		}
@@ -517,6 +621,13 @@
 			color: white;
 			cursor: pointer;
 			font-weight: 600;
+			transition: background-color .5s ease;
+		}
+		.profileModal .login-button:hover {
+			background-color: #716be3;
+		}
+		.profileModal .login-button:active {
+			background-color: #9c9cec;
 		}
 		.profileModal .createAccount {
 			font-size: 16px;
@@ -525,12 +636,11 @@
 			color: black;
 			margin-bottom: 5px;
 			border-radius: 10px;
-			transition: background-color .7s ease;
+			transition: background-color .6s ease;
 		}
 		.profileModal .createAccount:hover {
 			background-color: rgb(116, 130, 236, .3);
 		}
-
 		.notification {
 			position: absolute;
 			top: 10px;
@@ -552,12 +662,17 @@
 			right: 0;
 			width: 100%;
 			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
+			background-color: rgba(0, 0, 0, .5);
 			backdrop-filter: blur(3px);
-			z-index: 1;
+			z-index: 9000;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity .3s ease, visibility .3s linear;
 		}
-		.hidden {
-			display: none;
+		.overlay.active {
+			opacity: 1;
+			visibility: visible;
+			transition: opacity .3s ease, visibility .3s linear;
 		}
 	</style>
 </head>
@@ -566,7 +681,7 @@
 	<div id="sidebar">
 		<img src="static/images/logo.png" alt="Logo" style="width: 100%; margin-bottom: 20px;">
 		<div class="sidebar-buttons">
-			<button class="sidebar-button-mainpage"><i class="sidebar-icon fa fa-bars"></i>FrontPage</button>
+			<button class="sidebar-button-mainpage sidebar-cur-page"><i class="sidebar-icon fa fa-bars"></i>FrontPage</button>
 			<button class="sidebar-button-trending"><i class="sidebar-icon fa-solid fa-arrow-up"></i>Trending</button>
 			<button class="sidebar-button-popular"><i class="sidebar-icon fa-solid fa-fire"></i>Popular</button>
 			<button class="sidebar-button-upload" onclick="openMenuUpload()"><i class="sidebar-icon fa-solid fa-upload"></i>Upload</button>
@@ -591,7 +706,7 @@
 	</div>
 	
 
-	<section class="profileModal hidden">
+	<section class="profileModal">
 		<button class="btn-close">⨉</button>
 		<h2>Sign In</h2>
 		<div class="login-block">
@@ -604,8 +719,10 @@
 			<button class="login-button" onclick="sendLogin()">Login</button>
 		</div>
 	</section>
-	<div class="overlay hidden"></div>
+	<div class="overlay"></div>
 	<script>
+		var element_volume = document.querySelector('#volumeControl')
+		element_volume.value = localStorage.getItem('volume') ? localStorage.getItem('volume') : 0.3
 		var element_search_input = document.querySelector('.sidebar-search input');
 		var element_sounds = document.querySelector('.sounds');
 		var profileModal = document.querySelector('.profileModal');
@@ -634,13 +751,18 @@
 		}
 
 
+		async function req_put(url = '', data = {}) {
+			var req = await fetch(url, {method: 'PUT', headers: {'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+			if (!req.ok) { throw new Error('Network response was not ok'); }
+			return req.json();
+		}
 		async function req_post(url = '', data = {}) {
-			var req = await fetch(url, {method: 'POST',headers: {'Content-Type': 'application/json'},body: JSON.stringify(data)});
+			var req = await fetch(url, {method: 'POST', headers: {'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}, body: JSON.stringify(data)});
 			if (!req.ok) { throw new Error('Network response was not ok'); }
 			return req.json();
 		}
 		async function req_get(url = '', params = {}) {
-			var req = await fetch(new URLSearchParams(params).toString() ? `${url}?${new URLSearchParams(params).toString()}` : url, {method: 'GET'});
+			var req = await fetch(new URLSearchParams(params).toString() ? `${url}?${new URLSearchParams(params).toString()}` : url, {method: 'GET', headers: {'Authorization': localStorage.getItem('token')}});
 			if (!req.ok) { throw new Error('Network response was not ok'); }
 			return req.json();
 		}
@@ -678,11 +800,15 @@
 			element_sounds.innerHTML = '';
 			sounds_results.forEach(function(sound_result){
 				var div = `
-	<div class="sound-block">
-		<div class="sound-block-content" sound_id=`+ sound_result['sound_id'] +`>
+	<div class="sound-block" sound_id=`+ sound_result['sound_id'] +`>
+		<div class="sound-block-content">
 			<div class="sound-row-header">
 				<div class="sound-row-item-name">`+ sound_result['sound_name'] +`</div>
-				<div class="sound-row-item-stats"><span>` + (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '-')  + sound_result['sound_stats'] +`</span></div>
+				<div class="sound-row-item-stats">
+					<a onclick="sendMark(`+ sound_result['sound_id'] +`, `+ (sound_result['sound_mark'] === 1 ? 2 : 1) +`)" class="sound-row-item-stats-like` + (sound_result['sound_mark'] === 1 ? ' active' : '') + `"><i class="fa-solid fa-thumbs-up"></i></a>
+					<a onclick="sendMark(`+ sound_result['sound_id'] +`, `+ (sound_result['sound_mark'] === 0 ? 2 : 0) +`)" class="sound-row-item-stats-dislike` + (sound_result['sound_mark'] === 0 ? ' active' : '') + `"><i class="fa-solid fa-thumbs-down"></i></a>
+					<span>` + (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '')  + sound_result['sound_stats'] +`</span>
+				</div>
 			</div>
 			<div class="sound-row-play">
 				<div class="sound-row-item" style="margin-right: auto;">
@@ -704,15 +830,34 @@
 			div += `</div>
 			<div class="sound-row-dwn">
 				<button class="sound-row-item-addtos"><img width="32" height="32" src="https://img.icons8.com/nolan/64/soundpad.png" alt="soundpad"/>Add to Shpotipad</button>
-				<div class="sound-row-item-dwn"><a onClick="javascript:downloadBlob('sounds/` + sound_result['sound_id'] + `', '` + sound_result['sound_id'] + '-' + sound_result['sound_name'].replace(/ /g, "-") + `.mp3')" target="_blank">` + sound_result['sound_downloads'] + ` <i class="fa-solid fa-download"></i></a></div>
-				<div class="sound-row-item-share"><i class="fa-solid fa-share"></i></div>
-				<div class="sound-row-item-dropdown"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+				<div class="sound-row-btns">
+					<div class="sound-row-item-dwn"><a onClick="javascript:downloadBlob('sounds/` + sound_result['sound_id'] + `', '` + sound_result['sound_id'] + '-' + sound_result['sound_name'].replace(/ /g, "-") + `.mp3')" target="_blank">` + sound_result['sound_downloads'] + ` <i class="fa-solid fa-download"></i></a></div>
+					<div class="sound-row-item-share"><i class="fa-solid fa-share"></i></div>
+					<div class="sound-row-item-dropdown"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+				</div>
 			</div>
 		</div>
 	</div>`;
 			element_sounds.innerHTML += div;
 			});
 		}
+
+		async function replaceSoundResult(sound_result, sound_element) {
+			deleteWavesurfers();
+			var el_like = sound_element.querySelector('.sound-row-item-stats-like');
+			var el_dlike = sound_element.querySelector('.sound-row-item-stats-dislike');
+			el_like.onclick = function() {sendMark(sound_result.sound_id, sound_result.sound_mark === 1 ? 2 : 1);}
+			el_dlike.onclick = function() {sendMark(sound_result.sound_id, sound_result.sound_mark === 0 ? 2 : 0);}
+			el_like.classList.remove('active');
+			el_dlike.classList.remove('active');
+			if (sound_result.sound_mark === 0) {
+				el_dlike.classList.add('active');
+			} else if (sound_result.sound_mark === 1) {
+				el_like.classList.add('active');
+			}
+			sound_element.querySelector('.sound-row-item-stats span').innerText = (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '')  + sound_result['sound_stats']
+		}
+
 		async function initializeWaveform(element, sound_id, src) {
 			if (wavesurfers['current']['obj']){
 				wavesurfers['current']['obj'].destroy();
@@ -732,6 +877,7 @@
 			wavesurfers['current']['sound_id'] = sound_id;
 			setVolume(null)
 			wavesurfer.load(src);
+			document.querySelector('#volumeControl');
 		}
 		async function deleteWavesurfers() {
 			if (wavesurfers['current']['obj']){
@@ -741,6 +887,7 @@
 		}
 		async function setVolume(new_value) {
 			if (new_value){
+				if (new_value)
 				localStorage.setItem('volume', new_value);
 			}
 			var wavesurfer = wavesurfers['current']['obj'];
@@ -749,7 +896,7 @@
 			}
 		}
 		async function playSound(sound_id, pause = false){
-			var soundBlockElement = document.querySelector('.sound-block-content[sound_id="'+sound_id+'"]');
+			var soundBlockElement = document.querySelector('.sound-block[sound_id="'+sound_id+'"]');
 			var soundTimelineElement = soundBlockElement.querySelector('.sound-row-item-timeline');
 			//soundTimelineElement.innerHTML = ``;
 			var wavesurfer = wavesurfers['current'];
@@ -768,7 +915,7 @@
 			} else {
 				var previousWavesurfer = wavesurfers['current'];
 				if (previousWavesurfer['sound_id']){
-					document.querySelector('.sound-block-content[sound_id="'+previousWavesurfer['sound_id']+'"]').querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
+					document.querySelector('.sound-block[sound_id="'+previousWavesurfer['sound_id']+'"]').querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-play"></i>';
 				}
 				initializeWaveform(soundTimelineElement, sound_id, 'sound/'+sound_id);
 				wavesurfer = wavesurfers['current'];
@@ -776,7 +923,14 @@
 				soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-pause"></i>';
 			}
 		}
-
+		async function sendMark(sound_id, mark) {
+			var resp = await req_put('/api/sound', {'sound_id': sound_id, 'sound_mark': mark});
+			if (resp.status){
+				replaceSoundResult(resp.sound, document.querySelector('.sound-block[sound_id="'+sound_id+'"]'))
+			} else {
+				showNotification(resp.message, '#FFBF00')
+			}
+		}
 		async function downloadBlob(url, filename) {
 			try {
 				var resp = await fetch(url);
@@ -797,16 +951,16 @@
 		}
 		async function openMenuProfile(){
 			if (states.modal){
-				profileModal.classList.add("hidden");
-				overlay.classList.add("hidden");
+				profileModal.classList.remove("active");
+				overlay.classList.remove("active");
 			} else {
-				profileModal.classList.remove("hidden");
-				overlay.classList.remove("hidden");
+				profileModal.classList.add("active");
+				overlay.classList.add("active");
 			}
 			states.modal = !states.modal;
 		}
 		document.addEventListener("keydown", function (e) {
-			if (e.key === "Escape" && !profileModal.classList.contains("hidden")) {
+			if (e.key === "Escape" && !profileModal.classList.contains("active")) {
 				openMenuProfile();
 			}
 		});

@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Request, Cookie, Form
+from fastapi import FastAPI, Request, Response, Header, Form
 from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
 from fastapi.exceptions import HTTPException
 from fastapi.templating import Jinja2Templates
 from urllib.parse import urlparse
 
-import logging, json, os
+import logging, json, os 
 
 from .api.models import *
 from .api.routers import router as api_router
@@ -28,15 +28,35 @@ async def on_startup():
 
 
 @app.get('/')
-async def route_index(request: Request, Authorization: str = Cookie(None)):
+async def route_index(request: Request, Authorization: str = Header(None)):
 	return templates.TemplateResponse('index.html', {'request': request})
 
 @app.get('/test')
-async def route_index(request: Request, Authorization: str = Cookie(None)):
+async def route_test(request: Request, Authorization: str = Header(None)):
 	return templates.TemplateResponse('test.html', {'request': request})
 
 
 
+@app.get('/search')
+async def router_search(request: Request, response: Response, q: str = None, tag: str = None, Authorization: str = Header(None)):
+	if q == '': q = None
+	if tag == '': tag = None
+	_db = database_driver()
+	sounds = await _db.get_sounds(q=q, tag=tag)
+
+	return {'status': True, 'sounds': sounds}
+	return templates.TemplateResponse('index.html', {'request': request})
+
+
+
+
+
+
+
+
+
+
+#############################################################
 @app.get('/sound/{sound_id}')
 def route_get_sound(sound_id: int):
 	_db = database_driver()
@@ -93,7 +113,6 @@ def route_dwn_sound(sound_id: int):
 		raise HTTPException(status_code=404, detail="Sound not found")
 
 
-
 @app.get('/static/{path:path}')
 async def route_get_image(path: str):
 	path_ = urlparse(path)
@@ -103,7 +122,7 @@ async def route_get_image(path: str):
 		if os.path.exists(path): return FileResponse(path=path)
 	except: raise HTTPException(status_code=404, detail="File not found")
 
-
+################################################################
 @app.exception_handler(404)
 async def not_found_exception_handler(request: Request, exc: HTTPException):
 	return templates.TemplateResponse('404.html', {'request': request}, status_code=404)
