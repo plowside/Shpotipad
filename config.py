@@ -8,3 +8,11 @@ cfg_jwt_algorithm = "HS256"
 cfg_jwt_alive_munites = 60
 
 cfg_mega_accounts = ['plowsidee@gmail.com:~0d$EVfxw1K*~FSr']
+
+cfg_email = {
+	'host': 'smtp.resend.com',
+	'port': 587,
+	'user': 'resend',
+	'password': 're_fFNkEoQh_KEAar37q2X6VoEQidsw3kuzK',
+	'from': 'plowside <shpotik@resend.dev>'
+}

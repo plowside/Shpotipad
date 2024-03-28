@@ -1,9 +1,12 @@
-import asyncio, logging, httpx, os
-from mega import Mega
+import asyncio, logging, requests, httpx, mega, os
 
 from config import *
 
-logging.getLogger('mega').setLevel(logging.ERROR)
+
+ses = requests.Session()
+ses.proxies = None#{"http": "http://proxy.server:3128", "https": "http://proxy.server:3128"}
+mega.mega.requests = ses
+#logging.getLogger('mega').setLevel(logging.ERROR)
 
 
 
@@ -11,7 +14,7 @@ logging.getLogger('mega').setLevel(logging.ERROR)
 class StorageMega:
 	def __init__(self):
 		self.accounts = {x: True for x in cfg_mega_accounts}
-		self.m = Mega().login()
+		self.m = mega.Mega().login()
 
 
 		#asyncio.get_event_loop().create_task(self.on_startup())
@@ -21,8 +24,8 @@ class StorageMega:
 		for acc in list(self.accounts):
 			try:
 				email, password = acc.split(':')
-				mega = Mega()
-				m = mega.login(email, password)
+				_mega = mega.Mega()
+				m = _mega.login(email, password)
 				remaining_space = m.get_storage_space(mega=True)
 				if remaining_space['total'] - remaining_space['used'] < 10:
 					logging.info(f'[StorageMega] No remaining space {acc}: {remaining_space["total"] - remaining_space["used"]}')
@@ -40,8 +43,8 @@ class StorageMega:
 		for acc in available_accounts:
 			try:
 				email, password = acc.split(':')
-				mega = Mega()
-				m = mega.login(email, password)
+				_mega = mega.Mega()
+				m = _mega.login(email, password)
 				file = m.upload(file_path)
 				return {'status': True, 'path': m.get_upload_link(file), 'account': acc}
 			except Exception as e:

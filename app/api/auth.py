@@ -1,15 +1,16 @@
+from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-import logging, time
+import logging, random, time
 
 from .models import *
 from .. import db_api
 from config import cfg_jwt_secret_key, cfg_jwt_algorithm, cfg_jwt_alive_munites
-
+from ..utils.email_utils import *
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+templates = Jinja2Templates(directory="templates")
 
 #####################################################################################
 def check_string(s, b='abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'):
@@ -71,6 +72,12 @@ async def create_user(payload: UserRegister):
 	con.commit()
 
 	return {'status': False, 'user': UserInDB(**cur.execute('SELECT * FROM users WHERE email = ?', [payload.email]).fetchone())}
+
+async def send_code(payload: UserSendCode):
+	code = random.randint(10000, 99999)
+	code = await send_email(f'{code} - Verify code', payload.email, html=templates.get_template('email.html').render({'current_date': 'March 28, 2024' , 'verify_code': code}))
+	return code
+
 
 async def auth_user(user: UserInDB):
 	_db = db_api.database_driver()

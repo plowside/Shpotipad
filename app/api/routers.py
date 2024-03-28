@@ -35,6 +35,16 @@ async def router_register(request: Request, response: Response, payload: UserReg
 	jwt_token = await auth_user(user)
 	return {'status': True, 'code': 200, **jwt_token}
 
+@router.post('/send_code')
+async def router_send_code(request: Request, response: Response, payload: UserSendCode):
+	code = await send_code(payload)
+	if not code['status']:
+		return {'status': False, 'code': 409, 'message': code.get('message')}
+
+
+	return {'status': True, 'code': 200, 'message': 'Verify code sent'}
+
+
 @router.get('/me')
 async def router_me(request: Request, response: Response, Authorization: str = Header(None)):
 	user = jwt_token_check(Authorization)

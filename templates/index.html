@@ -782,9 +782,13 @@
 		</div>
 	</section>
 	<div class="overlay"></div>
+	
+
+
 	<script>
 		var element_volume = document.querySelector('#volumeControl')
 		element_volume.value = localStorage.getItem('volume') ? localStorage.getItem('volume') : 0.3
+		setVolume(element_volume.value)
 		var element_search_input = document.querySelector('.sidebar-search input');
 		var element_sounds = document.querySelector('.sounds');
 		var profileModal = document.querySelector('.profileModal');

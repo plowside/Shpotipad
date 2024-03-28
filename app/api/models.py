@@ -20,9 +20,13 @@ class UserLogin(BaseModel):
 	password: str
 
 class UserRegister(BaseModel):
+	code: int
 	username: str
 	email: str
 	password: str
+
+class UserSendCode(BaseModel):
+	email: str
 
 class UserUpdate(BaseModel):
 	username: str = None

@@ -9,3 +9,4 @@ uvicorn[standard]
 passlib[bcrypt]
 python-multipart
 python-jose
+aiosmtplib
