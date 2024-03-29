@@ -232,6 +232,9 @@ class database_driver:
 		if not sound_info['status']:
 			threading.Thread(target=os_delete, args=[sound_info['path']]).start()
 			return sound_info
+		elif sound_info['duration'] > 60:
+			threading.Thread(target=os_delete, args=[sound_info['path']]).start()
+			return {'status': False, 'message': 'Max. duration is 60 seconds'}
 		sound.sound_duration = int(sound_info['duration'])
 		sound.sound_url = sound_info['path']
 		sound.sound_url_data = f'local'
