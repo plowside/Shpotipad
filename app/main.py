@@ -9,7 +9,7 @@ import logging, json, os
 from .api.models import *
 from .api.routers import router as api_router
 from .api.auth import jwt_token_check
-from .db_api import database_driver, mega_client
+from .db_api import *
 from config import *
 
 #################################################################################################################################
@@ -24,6 +24,7 @@ for x in ['storage/uploads/sounds']: os.makedirs(x, exist_ok=True)
 @app.on_event("startup")
 async def on_startup():
 	database_driver().create_tables()
+	temp_database_driver().create_tables()
 
 
 

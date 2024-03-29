@@ -18,6 +18,65 @@ def os_delete(*paths):
 			try: os.remove(path); break
 			except Exception as e: time.sleep(.8)
 
+
+
+
+class temp_database_driver:
+	def __init__(self):
+		self.con = sqlite3.connect('storage/temp_db.db')
+		self.con.row_factory = DB_DictFactory
+		self.cur = self.con.cursor()
+
+	def _get_connection(self):
+		return self.con, self.cur
+	
+	def change_list(self, *query):
+		for q in query:
+			self.cur.execute(q)
+		self.con.commit()
+
+	def select(self, q, *p):
+		return self.cur.execute(q, p).fetchone()
+	
+	def selecta(self, q, *p):
+		return self.cur.execute(q, p).fetchall()
+
+	def insert(self, q, *p):
+		self.cur.execute(q, p)
+		self.con.commit()
+
+	def close(self):
+		self.cur.close()
+		self.con.close()
+
+	def create_tables(self):
+		table_queries = {
+			'tokens': '''
+				CREATE TABLE IF NOT EXISTS tokens(
+					token TEXT,
+					some_data TEXT,
+					ts INTEGER
+				)
+			''',
+		}
+
+		for table_name, q in table_queries.items():
+			self.cur.execute(q)
+
+		self.con.commit()
+
+
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		self.close()
+
+	def __del__(self):
+		self.close()
+
+
+
 class database_driver:
 	def __init__(self):
 		self.con = sqlite3.connect('storage/db.db')
@@ -30,6 +89,16 @@ class database_driver:
 	def change_list(self, *query):
 		for q in query:
 			self.cur.execute(q)
+		self.con.commit()
+
+	def select(self, q, *p):
+		return self.cur.execute(q, p).fetchone()
+	
+	def selecta(self, q, *p):
+		return self.cur.execute(q, p).fetchall()
+
+	def insert(self, q, *p):
+		self.cur.execute(q, p)
 		self.con.commit()
 
 	def close(self):
@@ -84,19 +153,14 @@ class database_driver:
 
 
 	def update_user(self, user, new_user):
+		new_user.email = None
 		sql_query = [x[0] for x in new_user if x[1]]
 		sql_query_v = [x[1] for x in new_user if x[1]]
 
-		print(f'UPDATE users SET ({", ".join(sql_query) if len(sql_query) > 1 else sql_query[0]}) = ({", ".join(sql_query_v) if len(sql_query_v) > 1 else "?"}) WHERE user_id = ?', [sql_query_v, user.user_id])
 		self.cur.execute(f'UPDATE users SET ({", ".join(sql_query) if len(sql_query) > 1 else sql_query[0]}) = ({", ".join(list("?"*len(sql_query_v))) if len(sql_query_v) > 1 else "?"}) WHERE user_id = ?', [*sql_query_v, user.user_id])
 		self.con.commit()
 
-		return UserSafe(**self.cur.execute('SELECT * FROM users WHERE user_id = ?', [user.user_id]).fetchone())
-
-
-
-
-
+		return self.cur.execute('SELECT * FROM users WHERE user_id = ?', [user.user_id]).fetchone()
 
 
 	async def get_sounds(self, user_id = None, q=None, limit=None, state=None, tag=None):
@@ -126,7 +190,7 @@ class database_driver:
 				params.extend([q, q])
 				sql_query += ' WHERE s.sound_name LIKE \'%\' || ? || \'%\' OR st.tag_name LIKE \'%\' || ? || \'%\''
 				
-		sql_query += ' GROUP BY s.sound_id'
+		sql_query += ' GROUP BY s.sound_id ORDER by s.sound_id DESC'
 
 		if limit:
 			limit = limit.split(',')

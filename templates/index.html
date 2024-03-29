@@ -20,10 +20,11 @@
 			margin: 0;
 			padding: 0;
 			color: #222;
+			line-height: 1.5;
 			box-sizing: border-box;
 			transition: background-color 0.3s ease;
 		}
-
+		/* SCROLLBAR  */
 		::-webkit-scrollbar {
 			width: 7px;
 			border-radius: 10px;
@@ -33,7 +34,62 @@
 			background-color: rgba(219, 219, 219, 1);
 			border-radius: 10px;
 		}
-
+		/* SPINNER */
+		.spinner {
+			-webkit-animation: rotate 2s linear infinite;
+			animation: rotate 2s linear infinite;
+			z-index: 9999999;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+			margin: -25px 0 0 -25px;
+			width: 50px;
+			height: 50px;
+		}
+		.spinner .path {
+			stroke: #222;
+			stroke-linecap: round;
+			-webkit-animation: dash 1.5s ease-in-out infinite;
+			animation: dash 1.5s ease-in-out infinite;
+		}
+		@-webkit-keyframes rotate {
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		@keyframes rotate {
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		@-webkit-keyframes dash {
+			0% {
+				stroke-dasharray: 1, 150;
+				stroke-dashoffset: 0;
+			}
+			50% {
+				stroke-dasharray: 90, 150;
+				stroke-dashoffset: -35;
+			}
+			100% {
+				stroke-dasharray: 90, 150;
+				stroke-dashoffset: -124;
+			}
+		}
+		@keyframes dash {
+			0% {
+				stroke-dasharray: 1, 150;
+				stroke-dashoffset: 0;
+			}
+			50% {
+				stroke-dasharray: 90, 150;
+				stroke-dashoffset: -35;
+			}
+			100% {
+				stroke-dasharray: 90, 150;
+				stroke-dashoffset: -124;
+			}
+		}
 		#sidebar {
 			display: flex;
 			flex-direction: column;
@@ -553,7 +609,231 @@
 			}
 		}
 
-	
+
+
+
+
+
+
+		.uploadModal {
+			position: fixed;
+			z-index: 9998;
+			top: 50%;
+			left: 50%;
+			margin-top: -22.5%;
+			margin-left: -48%;
+			height: 94%;
+			min-width: 96%;
+			border: 1px solid #ddd;
+			border-radius: 15px;
+			background-color: #f0f0f0;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.3s ease, visibility 1s linear 0.3s;
+			text-align: right;
+			box-sizing: border-box;
+		}
+		.uploadModal.active {
+			opacity: 1;
+			visibility: visible;
+			transition: opacity 0.3s ease, visibility 1s linear;
+		}
+		.uploadModal .remove-block {
+			display: flex;
+			padding: .25rem !important;
+			background-color: #0C0A3E;
+			color: #fff;
+			border-radius: 10rem;
+			font-size: 75%;
+			text-align: center;
+			white-space: nowrap;
+			font-weight: 700;
+			line-height: 1;
+			align-items: center;
+			margin-right: 1px;
+			margin-bottom: 1px;
+		}
+		.uploadModal .tags {
+			padding: .5rem;
+			display: flex;
+			flex-wrap: wrap;
+			color: #495057;
+			border: 1px solid #ced4da;
+			border-radius: .25rem;
+			transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		}
+		.uploadModal .cat-button {
+			transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+			background-color: transparent;
+			font-weight: 400;
+			color: #0C0A3E;
+			border: 1px solid #0C0A3E;
+			padding: .5rem .7rem;
+		}
+		.uploadModal .cat-button:hover {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: #fff;
+		}
+		.uploadModal .cat-button.active {
+			border-color: #0C0A3E;
+			background-color: #0C0A3E;
+			color: #fff;
+		}
+		.uploadModal .upload-block {
+			margin-top: 20px;
+		}
+		.uploadModal button {
+			cursor: pointer;
+			border: none;
+			font-weight: 600;
+		}
+		.uploadModal h2 {
+			font-size: 30px;
+			margin-bottom: 30px;
+			text-align: center;
+		}
+		.uploadModal .btn-close {
+			margin-right: 10px;
+			margin-top: 10px;
+			padding: 0.5rem 0.7rem;
+			background: #eee;
+			border-radius: 50%;
+			transform: none;
+			transition: background-color .5s ease;
+		}
+		.uploadModal .btn-close:hover {
+			background-color: rgb(116, 130, 236, .6);
+		}
+		.uploadModal .input {
+			font-size: 18px;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+			outline-color: #7482ec;
+		}
+		.uploadModal input:disabled {
+			font-size: 18px;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+			outline-color: #7482ec;
+			background-color: #f0f0f0;
+		}
+		.uploadModal .row {
+			display: flex;
+			flex-wrap: no-wrap;
+			margin-right: -15px;
+			margin-left: -15px;
+		}
+		.uploadModal .col-1 {
+			flex: 0 0 100%;
+			max-width: 100%;
+			position: relative;
+			width: 100%;
+			padding-right: 15px;
+			padding-left: 15px;
+		}
+		.uploadModal .col-2 {
+			flex: 0 0 55%;
+			max-width: 55%;
+			position: relative;
+			padding-right: 15px;
+			padding-left: 15px;
+		}
+		.uploadModal .col-3 {
+			flex: 0 0 40%;
+			max-width: 40%;
+			position: relative;
+			padding-right: 5px;
+			padding-left: 15px;
+		}
+		.uploadModal .upload-zone {
+			align-items: center !important;
+			justify-content: center !important;
+			flex-direction: column !important;
+			display: flex !important;
+		}
+		.uploadModal .upload-element {
+			justify-content: center !important;
+			display: flex !important;
+		}
+		.uploadModal .btn-input:not(:disabled):not(.disabled), .carousel-indicators li, .volume-control span, [role=button], [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled), summary {
+			cursor: pointer;
+		}
+		.uploadModal .btn-input {
+			display: inline-block;
+			color: #fff;
+			text-align: center;
+			vertical-align: middle;
+			user-select: none;
+			background-color: #F9564F;
+			border: 1px solid #F9564F;
+			padding: .375rem .75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			border-radius: .25rem;
+			transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		}
+		.uploadModal .btn-input:active {
+			box-shadow: 0 0 0 0.2rem rgba(12,10,62,.5);
+		}
+		.uploadModal .btn-social {
+			display: inline-block;
+			color: #0C0A3E;
+			text-align: center;
+			vertical-align: middle;
+			user-select: none;
+			background-color: transparent;
+			border: 1px solid #0C0A3E;
+			padding: .25rem .5rem;
+			font-size: .875rem;
+			font-weight: 400;
+			font-family: inherit;
+			line-height: 1.5;
+			border-radius: .25rem;
+			transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		}
+		.uploadModal .btn-social:hover {
+			color: #fff;
+			background-color: #0C0A3E;
+		}
+		.uploadModal .btn-social:active {
+			box-shadow: 0 0 0 0.2rem rgba(12,10,62,.5);
+		}
+		.uploadModal .sounds-list {
+			border-left: 1px dotted #ddd;
+			padding-left: 15px;
+			min-height: 100%;
+		    display: flex;
+		    flex-direction: column;
+		    flex-wrap: nowrap;
+		    align-items: flex-start;
+		}
+		.upload-sound-block {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			height: 100%;
+		    border: 1px solid rgba(0, 0, 0, .125);
+		    border-radius: .25rem;
+		    background-color: #fff;
+		    min-width: 0;
+	        background-clip: border-box;
+		}
+		.upload-sound-block .header {
+		    border-bottom: 1px solid rgba(0, 0, 0, .125);
+			padding: .75rem 1.25rem;
+		    background-color: rgba(0, 0, 0, .03);
+		}
+
+
 		.profileModal {
 			display: flex;
 			flex-direction: column;
@@ -567,7 +847,8 @@
 			z-index: 9998;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%, -50%);
+			margin-top: -10.5%;
+			margin-left: -12.5%;
 			background-color: white;
 			border: 1px solid #ddd;
 			border-radius: 15px;
@@ -615,6 +896,17 @@
 			box-sizing: border-box;
 			outline-color: #7482ec;
 		}
+		.profileModal input:disabled {
+			font-size: 18px;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+			outline-color: #7482ec;
+			background-color: #f0f0f0;
+		}
 		.profileModal input.password {
 			display: inline-block;
 		}
@@ -635,7 +927,14 @@
 		.profileModal .update-block i.fa-eye-slash {
 			position: absolute;
 			margin-left: -100px;
-			bottom: 25%;
+			bottom: 24%;
+			right: 7%;
+			cursor: pointer;
+		}
+		.profileModal .reset-block i.fa-eye-slash {
+			position: absolute;
+			margin-left: -100px;
+			bottom: 28%;
 			right: 7%;
 			cursor: pointer;
 		}
@@ -708,7 +1007,6 @@
 	</style>
 </head>
 <body>
-
 	<div id="sidebar">
 		<a href="/" class="sidebar-logo">
 			<img src="static/images/fresh-logo.png" alt="Logo" style="width: 15%;">
@@ -742,29 +1040,25 @@
 
 	<section class="profileModal">
 		<button class="btn-close">⨉</button>
+		<div class="reg-block hidden" state="email">
+		</div>
+		<div class="reset-block hidden" state="email">
+		</div>
 		<div class="login-block">
 			<h2>Sign In</h2>
-			<div style="text-align: left;">
-				<button class="createAccount" onclick="profileModalCreateAccount()">Create Account</button>
+			<div style="display: flex; flex-direction: row; justify-content: space-between;">
+				<div style="text-align: left;">
+					<button class="createAccount" onclick="profileModalCreateAccount()">Create Account</button>
+				</div>
+				<div style="text-align: right;">
+					<button class="createAccount" onclick="profileModalForgotPassword()">Forgot password</button>
+				</div>
 			</div>
 			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendLogin() }">
-				<input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" required>
-				<input type="password" class="password" name="password" placeholder="Password" autocomplete="on | off" required>
+				<input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" minlength="3" maxlength="64" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required>
+				<input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required>
 				<i class="togglePassword fa-regular fa-eye-slash"></i>
 				<button type="submit" class="login-button">Login</button>
-			</form>
-		</div>
-		<div class="reg-block hidden">
-			<h2>Create Account</h2>
-			<div style="text-align: left;">
-				<button class="createAccount" onclick="profileModalCreateAccount()">Log in</button>
-			</div>
-			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }">
-				<input type="text" class="username" name="username" minlength="3" maxlength="32" placeholder="Username" onkeypress="return isUK(event)" autocomplete="on | off" required>
-				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onkeypress="return isUK(event)" required>
-				<input type="password" class="password" name="password" minlength="4" maxlength="128" placeholder="Password" onkeypress="return isPK(event)" autocomplete="on | off" required>
-				<i class="togglePassword fa-regular fa-eye-slash"></i>
-				<button type="submit" class="login-button">Create</button>
 			</form>
 		</div>
 		<div class="update-block hidden">
@@ -773,70 +1067,160 @@
 				<button class="createAccount" onclick="logout()">Logout</button>
 			</div>
 			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { updateProfile() }">
-				<input type="text" class="username" name="username" minlength="3" maxlength="32" placeholder="Username" onkeypress="return isUK(event)" autocomplete="on | off" required>
-				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onkeypress="return isUK(event)" required disabled>
-				<input type="password" class="password" name="password" minlength="4" maxlength="128" placeholder="Password" onkeypress="return isPK(event)" autocomplete="on | off">
+				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUM(event)" required disabled>
+				<input type="text" class="username" name="username" minlength="3" maxlength="32" placeholder="Username" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" autocomplete="on | off" required>
+				<input type="password" class="password" name="password" minlength="4" maxlength="128" placeholder="Password" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" autocomplete="on | off">
 				<i class="togglePassword fa-regular fa-eye-slash"></i>
 				<button type="submit" class="login-button">Update</button>
 			</form>
 		</div>
 	</section>
+	<section class="uploadModal">
+		<button class="btn-close">⨉</button>
+		<div class="upload-block">
+			<div class="row">
+				<div class="col-1">
+					<div class="upload-zone">
+						<div class="upload-element">
+							<h2>Загрузи свои саундтреки</h2>
+						</div>
+						<div class="upload-element">
+							<img src="/static/images/upload-inputer.svg" alt="" width="30%">
+						</div>
+						<div class="upload-element">
+							<div style="align-items: center !important; display: flex !important;">
+								<p style="margin-top: 1rem !important;">Перетащи свои файлы на эту поверхность или</p>
+								<label for="file-input" style="margin-left: .5rem !important; display: inline-block; margin-bottom: .5rem;">
+									<input id="file-input" accept="audio/*" multiple="false" hidden="" type="file" onchange="addSound(this.files[0])">
+									<a class="btn-input" tabindex="0">
+										<svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="folder-open" data-prefix="fas" id="ember122" class="svg-inline--fa fa-folder-open fa-w-18 fa-fw ember-view mr-2"><path fill="currentColor" d="M572.694 292.093L500.27 416.248A63.997 63.997 0 0 1 444.989 448H45.025c-18.523 0-30.064-20.093-20.731-36.093l72.424-124.155A64 64 0 0 1 152 256h399.964c18.523 0 30.064 20.093 20.73 36.093zM152 224h328v-48c0-26.51-21.49-48-48-48H272l-64-64H48C21.49 64 0 85.49 0 112v278.046l69.077-118.418C86.214 242.25 117.989 224 152 224z"></path>
+										</svg> Выбрать файлы
+									</a>
+								</label>
+							</div>
+						</div>
+						<div>
+							<button class="btn-social" type="button" onclick="showNotification('Will be soon', '#FEBE10')">Импорт с Youtube</button>
+							<button class="btn-social" type="button" onclick="showNotification('Will be soon', '#FEBE10')">Загрузить по url</button>
+							<button class="btn-social" type="button" onclick="showNotification('Will be soon', '#FEBE10')">Import from TikTok <span class="badge badge-secondary ml-auto">Новый</span></button>
+						</div>
+						<small style="color: #6c757d !important; margin-top: .5rem !important; font-size: 80%; font-weight: 400;">Звуки могут длиться до 60 секунд.</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 	<div class="overlay"></div>
-	
 
 
 	<script>
-		var element_volume = document.querySelector('#volumeControl')
-		element_volume.value = localStorage.getItem('volume') ? localStorage.getItem('volume') : 0.3
-		setVolume(element_volume.value)
-		var element_search_input = document.querySelector('.sidebar-search input');
-		var element_sounds = document.querySelector('.sounds');
-		var profileModal = document.querySelector('.profileModal');
-		var togglePassword = document.querySelectorAll('.togglePassword');
-		var overlay = document.querySelector('.overlay');
 		var sounds_state = 'new';
 		var wavesurfers = {'current': {'sound_id': null, 'obj': null}};
-		var states = {modal: {login: false, reg: false}}
+		var states = {modal: {upload: false, login: false, reg: false, reset: false}, spinner: false}
 		var me = null;
+		let timeoutId;
+		var files = [];
 
-		function showNotification(text, color) {
-			var notification = document.createElement('div');
-			notification.className = 'notification';
-			notification.textContent = text;
-			notification.style.backgroundColor = color;
-			document.body.appendChild(notification);
-			setTimeout(function() {
-			    notification.style.opacity = '1';
-			}, 100);
+		document.querySelector('#volumeControl').value = localStorage.getItem('volume') ? localStorage.getItem('volume') : 0.3;
+		setVolume(document.querySelector('#volumeControl').value);
+		initializeProfile();
+		searchResults();
+		profileModalState();
+		addevents();
 
-			setTimeout(function() {
-				notification.style.opacity = '0';
-				setTimeout(function() {
-					document.body.removeChild(notification);
-				}, 500);
-			}, 1000);
+
+		function addevents(tp=true, close_modal=true, search=true) {
+			if (search){
+				document.querySelector('.sidebar-search input').addEventListener('input', function() {
+					clearTimeout(timeoutId);
+					timeoutId = setTimeout(searchResults, 300);
+				});
+				document.querySelector('.sidebar-search input').addEventListener('Enter', function() {
+					searchResults();
+				});
+			}
+			if (close_modal){
+				document.addEventListener("keydown", function(e) {
+					if (e.key === "Escape") {
+						if (!document.querySelector('.update-block').classList.contains('hidden') || !document.querySelector('.login-block').classList.contains('hidden') || !document.querySelector('.reg-block').classList.contains('hidden') || !document.querySelector('.reset-block').classList.contains('hidden')){
+							openMenuProfile(true);
+						}
+						if (document.querySelector('.uploadModal').classList.contains('active')) {
+							openMenuUpload(true);
+						}
+					}
+				});
+				document.querySelector(".overlay").addEventListener("click", function(e) {
+					if (!document.querySelector('.update-block').classList.contains('hidden') || !document.querySelector('.login-block').classList.contains('hidden') || !document.querySelector('.reg-block').classList.contains('hidden') || !document.querySelector('.reset-block').classList.contains('hidden')){
+						openMenuProfile(true);
+					}
+					if (document.querySelector('.uploadModal').classList.contains('active')) {
+						openMenuUpload(true);
+					}
+				});
+				document.querySelectorAll(".btn-close").forEach(function(e) {
+					e.addEventListener("click", function(e) {
+						if (!document.querySelector('.update-block').classList.contains('hidden') || !document.querySelector('.login-block').classList.contains('hidden') || !document.querySelector('.reg-block').classList.contains('hidden') || !document.querySelector('.reset-block').classList.contains('hidden')){
+							openMenuProfile(true);
+						}
+						if (document.querySelector('.uploadModal').classList.contains('active')) {
+							openMenuUpload(true);
+						}
+					});
+				});
+			}
+			if (tp){
+				document.querySelectorAll('.togglePassword').forEach(function(el) {
+					el.addEventListener('click', function(e) {
+						var password = el.previousElementSibling;
+						password.setAttribute('type', password.getAttribute('type') == 'password' ? 'text' : 'password');
+						this.classList.toggle('fa-eye');
+					});
+				});
+			}
 		}
-
-
+		function switchSpinner(){
+			if (states.spinner){
+				var spinner = document.querySelector(".spinner");
+				if (spinner) {
+					spinner.parentNode.removeChild(spinner);
+				}
+			} else {
+				document.body.innerHTML += `<svg class="spinner" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle></svg>`;
+			}
+			states.spinner = !states.spinner;
+		}
+		function handlePaste(el, e){
+			e.preventDefault();
+			var p_start = el.selectionStart;
+			var p_end = el.selectionEnd;
+			var r = (e.clipboardData || window.clipboardData).getData('text').split('').filter(char => 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'.includes(char.toLowerCase())).join('');
+			el.value = el.value.substring(0, p_start) + r + el.value.substring(p_end);
+			el.selectionStart = p_start+r.length;
+			el.selectionEnd = p_start+r.length;
+		}
+		// FUNCS
 		async function req_put(url = '', data = {}) {
 			var req = await fetch(url, {method: 'PUT', headers: {'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}, body: JSON.stringify(data)});
-			if (!req.ok) { throw new Error('Network response was not ok'); }
+			if (!req.ok) { showNotification('Server error, try again later', '#FEBE10'); }
 			return req.json();
 		}
 		async function req_post(url = '', data = {}) {
+			switchSpinner();
 			var req = await fetch(url, {method: 'POST', headers: {'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}, body: JSON.stringify(data)});
-			if (!req.ok) { throw new Error('Network response was not ok'); }
+			if (!req.ok) { showNotification('Server error, try again later', '#FEBE10'); }
+			switchSpinner();
 			return req.json();
 		}
 		async function req_get(url = '', params = {}) {
 			var req = await fetch(new URLSearchParams(params).toString() ? `${url}?${new URLSearchParams(params).toString()}` : url, {method: 'GET', headers: {'Authorization': localStorage.getItem('token')}});
-			if (!req.ok) { throw new Error('Network response was not ok'); }
+			if (!req.ok) { showNotification('Server error, try again later', '#FEBE10'); }
 			return req.json();
 		}
 		async function searchResults(_limit = [0, 20]) {
 			(async () => {
 				try {
-					var resp = await req_get('api/search', {q: q = element_search_input.value, limit: _limit});
+					var resp = await req_get('api/search', {q: q = document.querySelector('.sidebar-search input').value, limit: _limit});
 					if (resp['status'] == false){
 						alert('Cant get sounds: '+resp['message']);
 					} else {
@@ -847,75 +1231,52 @@
 				}
 			})();
 		}
-
-
-		searchResults();
-
-
-		function isUK(event) {
-			return 'abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase());
+		function showNotification(text, color) {
+			var notification = document.createElement('div');
+			notification.className = 'notification';
+			notification.textContent = text;
+			notification.style.backgroundColor = color;
+			document.body.appendChild(notification);
+			setTimeout(function() {
+				notification.style.opacity = '1';
+			}, 100);
+			setTimeout(function() {
+				notification.style.opacity = '0';
+				setTimeout(function() {
+					try {
+						document.body.removeChild(notification);
+					} catch {}
+				}, 500);
+			}, 1000);
 		}
-		function isPK(event) {
-			return 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'.includes(event.key.toLowerCase());
-		}
+		function isUK(event) {return 'abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase());}
+		function isPK(event) {return 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'.includes(event.key.toLowerCase());}
+		function isN(event) {return '1234567890'.includes(event.key);}
 
-		let timeoutId;
-		element_search_input.addEventListener('input', function() {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(searchResults, 300);
-		});
-		element_search_input.addEventListener('Enter', function() {
-			searchResults();
-		});
 
-		async function addSoundsResults(sounds_results) {
+
+
+
+		// LOGIC
+		async function addSoundsResults(sounds_results){
 			deleteWavesurfers();
-			element_sounds.innerHTML = '';
+			document.querySelector('.sounds').innerHTML = '';
 			sounds_results.forEach(function(sound_result){
-				var div = `
-	<div class="sound-block" sound_id=`+ sound_result['sound_id'] +`>
-		<div class="sound-block-content">
-			<div class="sound-row-header">
-				<div class="sound-row-item-name">`+ sound_result['sound_name'] +`</div>
-				<div class="sound-row-item-stats">
-					<a onclick="sendMark(`+ sound_result['sound_id'] +`, `+ (sound_result['sound_mark'] === 1 ? 2 : 1) +`)" class="sound-row-item-stats-like` + (sound_result['sound_mark'] === 1 ? ' active' : '') + `"><i class="fa-solid fa-thumbs-up"></i></a>
-					<a onclick="sendMark(`+ sound_result['sound_id'] +`, `+ (sound_result['sound_mark'] === 0 ? 2 : 0) +`)" class="sound-row-item-stats-dislike` + (sound_result['sound_mark'] === 0 ? ' active' : '') + `"><i class="fa-solid fa-thumbs-down"></i></a>
-					<span>` + (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '')  + sound_result['sound_stats'] +`</span>
-				</div>
-			</div>
-			<div class="sound-row-play">
-				<div class="sound-row-item" style="margin-right: auto;">
-					<button class="sound-row-item-play" onclick="playSound(`+ sound_result['sound_id'] +`)"><i class="fa-solid fa-play"></i></button>
-				</div>
-				<div class="sound-row-item-timeline"></div>
-				<div class="sound-row-item-duration">`+ sound_result['sound_duration'] +` sec.</div>
-			</div>
-			<div class="sound-row-tags">`;
+				var div = `<div class="sound-block" sound_id=`+ sound_result['sound_id'] +`><div class="sound-block-content"><div class="sound-row-header"><div class="sound-row-item-name">`+ sound_result['sound_name'] +`</div><div class="sound-row-item-stats"><a onclick="sendMark(`+ sound_result['sound_id'] +`, `+ (sound_result['sound_mark'] === 1 ? 2 : 1) +`)" class="sound-row-item-stats-like` + (sound_result['sound_mark'] === 1 ? ' active' : '') + `"><i class="fa-solid fa-thumbs-up"></i></a><a onclick="sendMark(`+ sound_result['sound_id'] +`, `+ (sound_result['sound_mark'] === 0 ? 2 : 0) +`)" class="sound-row-item-stats-dislike` + (sound_result['sound_mark'] === 0 ? ' active' : '') + `"><i class="fa-solid fa-thumbs-down"></i></a><span>` + (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '')  + sound_result['sound_stats'] +`</span></div></div><div class="sound-row-play"><div class="sound-row-item" style="margin-right: auto;"><button class="sound-row-item-play" onclick="playSound(`+ sound_result['sound_id'] +`)"><i class="fa-solid fa-play"></i></button></div><div class="sound-row-item-timeline"></div><div class="sound-row-item-duration">`+ sound_result['sound_duration'] +` sec.</div></div><div class="sound-row-tags">`;
 			sound_result['sound_tags'].forEach(function(x){
 				var tag = x.split('|');
 				if (tag[1] == 0){
-					div += `\n				<a href="search?q=`+ tag[0] +`" class="sound-row-item-tag">`+ tag[0] +`</a>`;
+					div += `<a href="search?q=`+ tag[0] +`" class="sound-row-item-tag">`+ tag[0] +`</a>`;
 				} else if (tag[1] == 1){
-					div += `\n				<a href="search?q=`+ tag[0] +`" class="sound-row-item-tag">`+ tag[0] +`</a>`;
+					div += `<a href="search?q=`+ tag[0] +`" class="sound-row-item-tag">`+ tag[0] +`</a>`;
 				}
 			});
 
-			div += `</div>
-			<div class="sound-row-dwn">
-				<button class="sound-row-item-addtos"><img width="32" height="32" src="https://img.icons8.com/nolan/64/soundpad.png" alt="soundpad"/>Add to Shpotipad</button>
-				<div class="sound-row-btns">
-					<div class="sound-row-item-dwn"><a onClick="javascript:downloadBlob('sounds/` + sound_result['sound_id'] + `', '` + sound_result['sound_id'] + '-' + sound_result['sound_name'].replace(/ /g, "-") + `.mp3')" target="_blank">` + sound_result['sound_downloads'] + ` <i class="fa-solid fa-download"></i></a></div>
-					<div class="sound-row-item-share"><i class="fa-solid fa-share"></i></div>
-					<div class="sound-row-item-dropdown"><i class="fa-solid fa-ellipsis-vertical"></i></div>
-				</div>
-			</div>
-		</div>
-	</div>`;
-			element_sounds.innerHTML += div;
+			div += `</div><div class="sound-row-dwn"><button class="sound-row-item-addtos"><img width="32" height="32" src="https://img.icons8.com/nolan/64/soundpad.png" alt="soundpad"/>Add to Shpotipad</button><div class="sound-row-btns"><div class="sound-row-item-dwn"><a onClick="javascript:downloadBlob('sounds/` + sound_result['sound_id'] + `', '` + sound_result['sound_id'] + '-' + sound_result['sound_name'].replace(/ /g, "-") + `.mp3')" target="_blank">` + sound_result['sound_downloads'] + ` <i class="fa-solid fa-download"></i></a></div><div class="sound-row-item-share"><i class="fa-solid fa-share"></i></div><div class="sound-row-item-dropdown"><i class="fa-solid fa-ellipsis-vertical"></i></div></div></div></div></div>`;
+			document.querySelector('.sounds').innerHTML += div;
 			});
 		}
-
-		async function replaceSoundResult(sound_result, sound_element) {
+		async function editSoundResult(sound_result, sound_element){
 			deleteWavesurfers();
 			var el_like = sound_element.querySelector('.sound-row-item-stats-like');
 			var el_dlike = sound_element.querySelector('.sound-row-item-stats-dislike');
@@ -930,10 +1291,9 @@
 			}
 			sound_element.querySelector('.sound-row-item-stats span').innerText = (sound_result['sound_stats'] == 0 ? `±` : sound_result['sound_stats'] > 0 ? '+' : '')  + sound_result['sound_stats']
 		}
-
 		async function initializeWaveform(element, sound_id, src) {
-			if (wavesurfers['current']['obj']){
-				wavesurfers['current']['obj'].destroy();
+			if (wavesurfers.current.obj){
+				wavesurfers.current.obj.destroy();
 			}
 			delete wavesurfers[src];
 			var wavesurfer = WaveSurfer.create({
@@ -948,7 +1308,7 @@
 			wavesurfers[src] = wavesurfer;
 			wavesurfers['current']['obj'] = wavesurfer;
 			wavesurfers['current']['sound_id'] = sound_id;
-			setVolume(null)
+			setVolume(null);
 			wavesurfer.load(src);
 			document.querySelector('#volumeControl');
 		}
@@ -960,10 +1320,9 @@
 		}
 		async function setVolume(new_value) {
 			if (new_value){
-				if (new_value)
 				localStorage.setItem('volume', new_value);
 			}
-			var wavesurfer = wavesurfers['current']['obj'];
+			var wavesurfer = wavesurfers.current.obj;
 			if (wavesurfer){
 				wavesurfer.setVolume(localStorage.getItem('volume'));
 			}
@@ -996,14 +1355,6 @@
 				soundBlockElement.querySelector('.sound-row-item-play').innerHTML = '<i class="fa-solid fa-pause"></i>';
 			}
 		}
-		async function sendMark(sound_id, mark) {
-			var resp = await req_put('/api/sound', {'sound_id': sound_id, 'sound_mark': mark});
-			if (resp.status){
-				replaceSoundResult(resp.sound, document.querySelector('.sound-block[sound_id="'+sound_id+'"]'))
-			} else {
-				showNotification(resp.message, '#FFBF00')
-			}
-		}
 		async function downloadBlob(url, filename) {
 			try {
 				var resp = await fetch(url);
@@ -1018,43 +1369,56 @@
 				console.error("Error downloading Sound:", error);
 			}
 		}
-		async function openMenuUpload(){
-			var profileModal = document.querySelector('.profileModal');
-			profileModal.innerHTML = ``;
-		}
-		async function openMenuProfile(){
-			if (states.modal.login){
-				profileModal.classList.remove("active");
-				overlay.classList.remove("active");
-			} else {
-				profileModal.classList.add("active");
-				overlay.classList.add("active");
+		async function addSound(file){
+			files = [file];
+			if (document.querySelector('.upload-block').firstElementChild.firstElementChild.classList.contains('col-1')){
+				document.querySelector('.upload-block').firstElementChild.firstElementChild.classList.remove('col-1');
+				document.querySelector('.upload-block').firstElementChild.firstElementChild.classList.add('col-2');
+				var tmp = document.createElement('div');
+				tmp.innerHTML = `<div class="col-3"><div class="sounds-list"><h3 style="font-size: 1.75rem; padding-bottom: .5rem !important; padding-top: .5rem !important; font-weight: 500;">Твой список саундтреков</h3><div class="upload-sound-block" file_index=""><div class="header"><div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;"><span>`+file.name+`</span><button class="btn-delete-sound" onclick="deleteSound(this)">⨉</button></div></div><div class="content" style="display: flex; flex-direction: column; align-items: flex-start; margin: 1rem; text-align: left;"><div style="padding: 1.25rem; padding-top: .5rem; padding-bottom: .5rem;"><div style="margin-top: .25rem; align-items: center; display: flex;"><button style="margin-bottom: .5rem; margin-top: .5rem; margin-right: 1rem;"><i class="fa-solid fa-play" aria-hidden="true"></i></button><label>SOUND TRACKING LINE</label></div></div><div class="name-block" style="margin-bottom: 2rem; line-height: 0;"><label style="margin-bottom: 6px; line-height: 2;">Название</label><input class="input" value="`+file.name+`" type="text"><small style="color: #6c757d !important; font-size: 80%; font-weight: 400;">Должно содержать обозначение саундтрека</small></div><div style="margin-bottom: 1rem;"><label>Категория</label><div><div style="margin-top: 6px;"><button class="cat-button" onclick="changeCat(this)" name="q" type="button" style="margin-right: -1px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">Цитата</button><button class="cat-button" onclick="changeCat(this)" name="w" type="button" style="margin-right: -1px;">Музыка</button><button class="cat-button" onclick="changeCat(this)" name="e" type="button" style="margin-right: -1px;">Эффект</button><button class="cat-button" onclick="changeCat(this)" name="r" type="button" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">Другое</button><br><small style="color: #6c757d; font-size: 70%; font-weight: 400;"></small></div></div></div><div style="line-height: 10px; display: flex; align-items: baseline;"><input class="input" id="explicit-sound-checkbox0" type="checkbox" style="margin-right: 10px;"><label for="explicit-sound-checkbox0">Оскорбительный</label></div><small style="margin-bottom: 1rem; color: #6c757d !important; margin-top: -5px; font-size: 80%; font-weight: 400;">Содержит неуместный или сексуальный контент.</small><div style="margin-bottom: 5px; line-height: 10px; display: flex; flex-direction: column; align-content: flex-start; justify-content: center; align-items: flex-start;"><label style="margin-bottom: 15px;">Тэги</label><div class="tags"><div style="margin-left: .25rem; display: flex"><input placeholder="Разделите их запятой." style="border: none; outline: none; flex-grow: 1; font-size: 16px;" onkeypress="splitTags(this, event)" type="text"></div></div></div><small style="margin-bottom: 1rem; color: #6c757d !important; margin-top: -5px; font-size: 80%; font-weight: 400;">Добавь ключевые слова для облегчения поиска</small></div></div></div><div style="display: flex; align-items: center; justify-content: center;"><button class="btn-social" style="font-size: 25px;" onclick="sendSounds()">Загрузить</button></div></div>`
+				document.querySelector('.upload-block').firstElementChild.appendChild(tmp.firstChild);
 			}
-			states.modal.login = !states.modal.login;
-		}
-		async function profileModalCreateAccount(){
-			if (states.modal.reg){
-				profileModal.querySelector('.login-block').classList.remove("hidden");
-				profileModal.querySelector('.reg-block').classList.add("hidden");
-			} else {
-				profileModal.querySelector('.login-block').classList.add("hidden");
-				profileModal.querySelector('.reg-block').classList.remove("hidden");
-			}
-			states.modal.reg = !states.modal.reg;
 		}
 
-		document.addEventListener("keydown", function (e) {
-			if (e.key === "Escape" && !profileModal.classList.contains("active")) {
-				openMenuProfile();
-			}
-		});
-		document.querySelector(".overlay").addEventListener("click", openMenuProfile);
-		document.querySelector(".profileModal .btn-close").addEventListener("click", openMenuProfile);
+		async function sendSounds(){
+			var formData = new FormData();
+			var el = document.querySelector('.upload-block .col-3');
+	
+			var tags = [];
+			el.querySelectorAll('.remove-block').forEach(function (e) {tags.push(e.innerText);});
+			formData.append('sound_file', files[0]);
+			formData.append('sound_data', JSON.stringify({sound_name: el.querySelector('.name-block .input').value.trim(), sound_tags: tags}));
+			var req = await fetch('api/sound', {method: 'POST', headers: {'Authorization': localStorage.getItem('token')}, body: formData});
+			if (!req.ok) {}
+			var resp = await req.json();
+			console.log(req);
+			if (resp.status){
+				showNotification('Sound uploaded', '#2CB32C');
+				location.reload();
+			} else {
+				showNotification(resp.message, '#D22B2B')
 
+			}
+		}
+
+
+
+
+
+		// AUTH
+		async function sendMark(sound_id, mark) {
+			var resp = await req_put('/api/sound', {'sound_id': sound_id, 'sound_mark': mark});
+			if (resp.status){
+				editSoundResult(resp.sound, document.querySelector('.sound-block[sound_id="'+sound_id+'"]'))
+			} else {
+				showNotification(resp.message, '#FFBF00')
+			}
+		}
 		async function sendLogin(){
 			var email = document.querySelector('.profileModal .login-block .email');
 			var password = document.querySelector('.profileModal .login-block .password');
 
+			console.log(email.value);
 			email.value = email.value.trim();
 			password.value = password.value.trim();
 			
@@ -1068,28 +1432,98 @@
 			} else {
 				showNotification(resp.message, '#D22B2B')
 			}
-			console.log(resp);
+			console.log('login response:',resp);
+			addevents();
 		}
 		async function sendReg(){
-			var username = document.querySelector('.profileModal  .reg-block .username');
-			var email = document.querySelector('.profileModal  .reg-block .email');
-			var password = document.querySelector('.profileModal  .reg-block .password');
-
-			username.value = username.value.trim();
+			var email = document.querySelector('.profileModal .reg-block .email');
+			var username = document.querySelector('.profileModal .reg-block .username');
+			var password = document.querySelector('.profileModal .reg-block .password');
+			var state = localStorage.getItem('auth.state_reg');
+		
 			email.value = email.value.trim();
-			password.value = password.value.trim();
-			
-			var resp = await req_post('api/register', {username: username.value, email: email.value, password: password.value});
-			if (resp.status){
-				localStorage.setItem('token', resp.token);
-				showNotification('Account created', '#2CB32C');
-				setTimeout(() => {
-					location.href = '/';
-				}, 1000);
-			} else {
-				showNotification(resp.message, '#D22B2B')
+			if (state == 'email'){
+				var resp = await req_post('api/send_code', {email: email.value});
+				if (resp.status){
+					localStorage.setItem('auth.state_reg', 'code');
+					localStorage.setItem('auth.state_reg_data', JSON.stringify({email: email.value}));
+					showNotification(resp.message, '#2CB32C');
+					initializeProfile(true);
+				} else {
+					showNotification(resp.message, '#D22B2B')
+				}
+			} else if (state == 'code'){
+				var code = document.querySelector('.profileModal .reg-block .code');
+				var resp = await req_post('api/send_code', {email: email.value, code: code.value});
+				if (resp.status){
+					localStorage.setItem('auth.state_reg', 'creds');
+					localStorage.setItem('auth.state_reg_data', JSON.stringify({email: email.value, token: resp.token}));
+					initializeProfile(true);
+				} else {
+					showNotification(resp.message, '#D22B2B')
+				}
+			} else if (state == 'creds'){
+				var resp = await req_post('api/register', {token: JSON.parse(localStorage.getItem('auth.state_reg_data')).token, email: email.value, username: username.value, password: password.value});
+				if (resp.status){
+					localStorage.removeItem('auth.state_reg');
+					localStorage.removeItem('auth.state_reg_data');
+					localStorage.setItem('token', resp.token);
+					initializeProfile();
+				} else if (resp.message == 'Verify Token expired'){
+					localStorage.setItem('auth.state_reg', 'email');
+					localStorage.removeItem('auth.state_reg_data');
+					showNotification(resp.message, '#D22B2B')
+					initializeProfile(true);
+				} else {
+					showNotification(resp.message, '#D22B2B')
+				}
 			}
-			console.log(resp);
+			console.log('['+state+'] register response:',resp);
+			addevents();
+		}
+		async function sendReset(){
+			var email = document.querySelector('.profileModal .reset-block .email');
+			var state = localStorage.getItem('auth.state_reset');
+		
+			email.value = email.value.trim();
+			if (state == 'email'){
+				var resp = await req_post('api/send_code', {email: email.value, reset: true});
+				if (resp.status){
+					localStorage.setItem('auth.state_reset', 'code');
+					localStorage.setItem('auth.state_reset_data', JSON.stringify({email: email.value}));
+					showNotification(resp.message, '#2CB32C');
+					initializeProfile(true);
+				} else {
+					showNotification(resp.message, '#D22B2B')
+				}
+			} else if (state == 'code'){
+				var code = document.querySelector('.profileModal .reset-block .code');
+				var resp = await req_post('api/send_code', {email: email.value, code: code.value, reset: true});
+				if (resp.status){
+					localStorage.setItem('auth.state_reset', 'creds');
+					localStorage.setItem('auth.state_reset_data', JSON.stringify({email: email.value, token: resp.token}));
+					initializeProfile(true);
+				} else {
+					showNotification(resp.message, '#D22B2B');
+				}
+			} else if (state == 'creds'){
+				var resp = await req_post('api/reset', {token: JSON.parse(localStorage.getItem('auth.state_reset_data')).token, email: email.value, password: document.querySelector('.profileModal  .reset-block .password').value});
+				if (resp.status){
+					localStorage.removeItem('auth.state_reset');
+					localStorage.removeItem('auth.state_reset_data');
+					localStorage.setItem('token', resp.token);
+					initializeProfile();
+				} else if (resp.message == 'Verify Token expired'){
+					localStorage.setItem('auth.state_reset', 'email');
+					localStorage.removeItem('auth.state_reset_data');
+					showNotification(resp.message, '#D22B2B');
+					initializeProfile(true);
+				} else {
+					showNotification(resp.message, '#D22B2B');
+				}
+			}
+			console.log('['+state+'] reset response:',resp);
+			addevents();
 		}
 		async function updateProfile(){
 			var username = document.querySelector('.profileModal  .update-block .username');
@@ -1102,42 +1536,199 @@
 			
 			var resp = await req_put('api/me', {username: username.value, email: email.value, password: password.value});
 			if (resp.status){
+				password.value = password.value = '';
 				me = resp.user;
+				if (resp.token){
+					localStorage.setItem('token', resp.token);
+				}
+
 				showNotification('Profile updated', '#2CB32C');
 				initializeProfile();
 			} else {
-				showNotification(resp.message, '#D22B2B')
+				showNotification(resp.message, '#D22B2B');
 			}
-			console.log(resp);
+			console.log('update_user response:',resp);
 		}
-		togglePassword.forEach(function(el){
-			el.addEventListener('click', function (e) {
-				var password = el.previousElementSibling;
-				password.setAttribute('type', password.getAttribute('type') === 'password' ? 'text' : 'password');
-				this.classList.toggle('fa-eye');
-			});
-		});
 		async function logout(){
 			localStorage.removeItem('token');
 			location.reload();
 		}
-		async function initializeProfile(){
-			resp = await req_get('api/me');
+		async function initializeProfile(skip = false){
+			var profileModal = document.querySelector('.profileModal');
+			if (skip){
+				resp = {status: false, message: null};
+			} else {
+				resp = await req_get('api/me');
+			}
 			if (resp.status){
 				me = resp.user;
 				var profile = document.querySelector('.sidebar-profile');
 				profile.innerHTML = `<i class="fa-regular fa-user"></i><p>`+ me.username +`</p>`;
 				profileModal.querySelector('.login-block').classList.add("hidden");
 				profileModal.querySelector('.reg-block').classList.add("hidden");
+				profileModal.querySelector('.reset-block').classList.add("hidden");
 				var profile_block = profileModal.querySelector('.update-block');
 				profile_block.classList.remove('hidden');
 				profile_block.querySelector('.username').value = me.username;
 				profile_block.querySelector('.email').value = me.email;
+				return;
+			} else {
+				// REG
+				var state = localStorage.getItem('auth.state_reg');
+
+				var state_data = JSON.parse(localStorage.getItem('auth.state_reg_data'));
+				if (state === null){state = 'email';localStorage.setItem('auth.state_reg', state);}
+
+				profileModal.querySelector('.reg-block').setAttribute('state', state);
+				if (state == 'email'){
+					profileModal.querySelector('.reg-block').innerHTML = `<h2>Create Account</h2><div style="text-align: left;"><button class="createAccount" onclick="profileModalCreateAccount()">Sign in</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required></i><button type="submit" class="login-button">Create</button></form>`;
+				} else if (state == 'code'){
+					profileModal.querySelector('.reg-block').innerHTML = `<h2>Verify Email</h2><p style="font-weight: 600; margin-bottom: 50px;">We sent verify code to `+state_data.email+`</p><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reg', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" value="`+state_data.email+`" required disabled><input type="text" class="code" name="code" placeholder="Verify code" minlength="5" maxlength="5" autocomplete="off" onpaste="handlePaste(this, event)" onkeypress="return isN(event)" required><button type="submit" class="login-button">Verify</button></form>`;
+				} else if (state == 'creds'){
+					profileModal.querySelector('.reg-block').innerHTML = `<h2>Create Account</h2><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reg', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUM(event)" value="`+state_data.email+`" required disabled><input type="text" class="username" name="username" placeholder="Username" minlength="3" maxlength="32" placeholder="Username" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required><input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required><i class="togglePassword fa-regular fa-eye-slash"></i><button type="submit" class="login-button">Create</button></form>`;
+				}
+
+				// RESET
+				var state = localStorage.getItem('auth.state_reset');
+				var state_data = JSON.parse(localStorage.getItem('auth.state_reset_data'));
+				if (state === null){state = 'email';localStorage.setItem('auth.state_reset', state);}
+
+				profileModal.querySelector('.reset-block').setAttribute('state', state);
+				if (state == 'email'){
+					profileModal.querySelector('.reset-block').innerHTML = `<h2>Forgot Password</h2><div style="text-align: left;"><button class="createAccount" onclick="profileModalForgotPassword()">Sign in</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }"><input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required></i><button type="submit" class="login-button">Find</button></form>`;
+				} else if (state == 'code'){
+					profileModal.querySelector('.reset-block').innerHTML = `<h2>Verify Email</h2><p style="font-weight: 600; margin-bottom: 50px;">We sent verify code to `+(state_data.email.includes('@') ? state_data.email : 'email connected to '+ state_data.email)+`</p><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reset', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" value="`+state_data.email+`" required disabled><input type="text" class="code" name="code" placeholder="Verify code" minlength="5" maxlength="5" autocomplete="off" onpaste="handlePaste(this, event)" onkeypress="return isN(event)" required><button type="submit" class="login-button">Verify</button></form>`;
+				} else if (state == 'creds'){
+					profileModal.querySelector('.reset-block').innerHTML = `<h2>New Password</h2><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reset', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }">`+ (state_data.email.includes('@') ? `<input type="email" class="email" name="email" placeholder="Email" onpaste="handlePaste(this, event)" onkeypress="return isUM(event)" value="`+state_data.email+`" required disabled>` : '<input type="text" class="email" name="username" placeholder="Username" placeholder="Username" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" value="'+state_data.email+'" required disabled>') +`<input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required><i class="togglePassword fa-regular fa-eye-slash"></i><button type="submit" class="login-button">Change</button></form>`;
+				}
+			}
+			addevents();
+		}
+		async function changeState(state_name, state){
+			localStorage.setItem(state_name, state);
+			console.log('Changing state:', state_name, state);
+			if (state_name = 'auth.state_reg'){
+				initializeProfile();
+			} else if (state_name = 'auth.state_reset'){
+				initializeProfile();
 			}
 		}
-		initializeProfile();
+		async function changeCat(element){
+			element.parentNode.querySelectorAll('button').forEach(function(el) {
+				el.classList.remove('active');
+			});
+			element.classList.add('active');
+			text = {'q': 'Разговорный текст и диалоги.', 'w': 'Песни и инструментальные звуки с пением или без.', 'e': 'Естественные или искусственные шумы без использования диалога или музыки.', 'r': ''}
+			element.parentNode.querySelector('small').textContent = text[element.name];
+		}
+		async function deleteSound(element){
+			files = [];
+			element.parentNode.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode.parentNode);
+		}
+		async function splitTags(element, event){
+			if (event.key == ','){
+				event.preventDefault();
+				var l = [];
+				element.parentNode.parentNode.querySelectorAll('.remove-block').forEach(function (e) {l.push(e.innerText);});
+				if (element.value.trim().length <= 1 || l.includes(element.value.trim())){return element.value = '';}
+				console.log(element.value.trim());
+				var tmp = document.createElement('div');
+				tmp.innerHTML = `<span class="remove-block">`+element.value.trim()+`<span role="button" class="remove"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="times-circle" data-prefix="fas" id="ember116" class="svg-inline--fa fa-times-circle fa-w-16 fa-fw ember-view ml-1"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path></svg></span></span>`;
+				element.parentNode.parentNode.insertBefore(tmp.firstChild, element.parentNode);
+				element.value = '';
+			}
+		}
+
+	
+		function handleFileSelect(event) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			var _files = event.dataTransfer.files;
+
+			// Обрабатываем каждый файл
+			for (var i = 0; i < _files.length; i++) {
+				var file = _files[i];
+				files.push();
+				console.log('Имя файла: ' + file.name + ', тип: ' + file.type + ', размер: ' + file.size + ' байт');
+				addSound(file);
+			}
+		}
+
+		function dragOverHandler(event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		var dropZone = document.querySelector('.upload-zone');
+		dropZone.addEventListener('dragover', dragOverHandler, false);
+		dropZone.addEventListener('drop', handleFileSelect, false);
 
 
+		// MODALS
+		async function openMenuUpload(close = false){
+			if (close || document.querySelector('.uploadModal').classList.contains('active')){
+				document.querySelector('.uploadModal').classList.remove("active");
+				document.querySelector('.overlay').classList.remove("active");
+			} else {
+				document.querySelector('.uploadModal').classList.add("active");
+				document.querySelector('.overlay').classList.add("active");
+			}
+			states.modal.upload = !states.modal.upload;
+		}
+		async function openMenuProfile(close = false){
+			if (close || !(!document.querySelector('.update-block').classList.contains('hidden') || !document.querySelector('.login-block').classList.contains('hidden') || !document.querySelector('.reg-block').classList.contains('hidden') || !document.querySelector('.reset-block').classList.contains('hidden'))){
+				document.querySelector('.overlay').classList.remove("active");
+				document.querySelector('.profileModal').classList.remove("active");
+			} else {
+				document.querySelector('.profileModal').classList.add("active");
+				document.querySelector('.overlay').classList.add("active");
+			}
+		}
+		async function profileModalCreateAccount(){
+			var profileModal = document.querySelector('.profileModal');
+			if (states.modal.reg){
+				states.modal.reg = false;
+				states.modal.login = true;
+				profileModal.querySelector('.login-block').classList.remove("hidden");
+				profileModal.querySelector('.reg-block').classList.add("hidden");
+			} else {
+				states.modal.reg = true;
+				states.modal.login = false;
+				profileModal.querySelector('.reg-block').classList.remove("hidden");
+				profileModal.querySelector('.login-block').classList.add("hidden");
+			}
+		}
+		async function profileModalForgotPassword(){
+			var profileModal = document.querySelector('.profileModal');
+			if (states.modal.reset){
+				states.modal.reset = false;
+				states.modal.login = true;
+				profileModal.querySelector('.login-block').classList.remove("hidden");
+				profileModal.querySelector('.reset-block').classList.add("hidden");
+			} else {
+				states.modal.reset = true;
+				states.modal.login = false;
+				profileModal.querySelector('.login-block').classList.add("hidden");
+				profileModal.querySelector('.reset-block').classList.remove("hidden");
+			}
+		}
+		async function profileModalState(){
+			var profileModal = document.querySelector('.profileModal');
+			if (localStorage.getItem('auth.state_reg') && localStorage.getItem('auth.state_reg') != 'email'){
+				states.modal.reg = true;
+				states.modal.login = false;
+				profileModal.querySelector('.login-block').classList.add("hidden");
+				profileModal.querySelector('.reg-block').classList.remove("hidden");
+			} else if (localStorage.getItem('auth.state_reset') && localStorage.getItem('auth.state_reset') != 'email') {
+				states.modal.reset = true;
+				states.modal.login = false;
+				states.modal.reg = false;
+				profileModal.querySelector('.login-block').classList.add("hidden");
+				profileModal.querySelector('.reg-block').classList.add("hidden");
+				profileModal.querySelector('.reset-block').classList.remove("hidden");
+			}
+		}
 	</script>
 </body>
 </html>

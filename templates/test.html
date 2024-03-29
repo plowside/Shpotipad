@@ -3,75 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modal Window</title>
+<title>Загрузка файла</title>
 <style>
 	body {
-		font-family: Arial, sans-serif;
-		font-size: 20px;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-		transition: background-color 0.3s ease;
+		background-color: grey;
 	}
-
-	.profileModal {
-		background-color: #f0f0f0;
-		padding: 20px;
-		border-radius: 10px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-		text-align: center;
-	}
-
-	.profileModal input {
-		width: 100%;
-		padding: 10px;
-		margin-bottom: 10px;
-		border-radius: 5px;
-		border: 1px solid #ccc;
-		box-sizing: border-box;
-		outline-color: #7482ec;
-	}
-
-	.profileModal button {
-		padding: 10px 20px;
-		border: none;
-		border-radius: 5px;
-		background-color: #7482ec;
-		color: white;
-		cursor: pointer;
-	}
-
-	.profileModal .createAccount {
-		background-color: transparent;
-		color: black;
-	}
+    /* Опциональные стили для украшения поля загрузки */
+    #drop_zone {
+        border: 2px dashed #ccc;
+        width: 300px;
+        height: 200px;
+        line-height: 200px;
+        text-align: center;
+        font-size: larger;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
 </style>
 </head>
 <body>
+<button onclick="sendFiles()">zxc</button>
 
-<div class="profileModal">
-	<h2>Login</h2>
-	<div >
-		<button class="createAccount">Create Account</button>
-	</div>
-	<input type="text" placeholder="Email/Username">
-	<input type="password" placeholder="Password">
-	<button>Login</button>
-</div>
+<div id="drop_zone">Перетащите файлы сюда для загрузки</div>
 
 <script>
-	var state = false;
-	document.querySelector('.createAccount').addEventListener('click', function() {
-		if (state){
-			document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-		} else {
-			document.body.style.backgroundColor = '';
-		}
-		state = !state;
-	});
+	var files = [];
+
+	function sendFiles(){
+		var formData = new FormData();
+const soundData = {
+    sound_name: 'С днем дрочения',
+    sound_tags: ['поздравление']
+};
+		files.forEach(function(file) {
+			formData.append('file', file);
+		});
+		formData.append('sound_data', JSON.stringify(soundData));
+		fetch('/api/sound', {
+				method: 'POST',
+				body: formData
+			}).then(response => {
+				return response.json();
+			}).then(data => {
+				console.log(data);
+				try {
+					if ('error' in data) {
+						alert('Error on record creation: '+data['error']);
+					} else {
+						alert('Record created. ID: '+ data['id']);
+					}
+				} catch (err) {
+					alert('Error on record creation: ' + err);
+				}
+			}).catch(error => {
+				alert('Error on record creation: ',error);
+				console.error('Error:', error);
+			});
+	}
+
+    // Функция для обработки перетаскивания файлов
+    function handleFileSelect(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var file = event.dataTransfer.files[0]; // Получаем список перетащенных файлов
+        files.push(file);
+            console.log('Имя файла: ' + file.name + ', тип: ' + file.type + ', размер: ' + file.size + ' байт');
+    }
+
+    // Функция для предотвращения стандартного поведения браузера при перетаскивании файлов
+    function dragOverHandler(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    // Получаем элемент drop_zone
+    var dropZone = document.getElementById('drop_zone');
+
+    // Добавляем обработчики событий
+    dropZone.addEventListener('dragover', dragOverHandler, false);
+    dropZone.addEventListener('drop', handleFileSelect, false);
 </script>
 
 </body>

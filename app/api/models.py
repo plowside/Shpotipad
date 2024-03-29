@@ -20,18 +20,26 @@ class UserLogin(BaseModel):
 	password: str
 
 class UserRegister(BaseModel):
-	code: int
+	token: str
 	username: str
+	email: str
+	password: str
+
+class UserReset(BaseModel):
+	token: str
 	email: str
 	password: str
 
 class UserSendCode(BaseModel):
 	email: str
+	code: int = None
+	reset: bool = False
 
 class UserUpdate(BaseModel):
 	username: str = None
 	email: str = None
 	password: str = None
+	hashed_password: str = None
 
 class JWTTokenPayload(BaseModel):
 	user_id: int

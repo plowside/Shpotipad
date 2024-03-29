@@ -63,4 +63,3 @@ class StorageMega:
 		except: pass
 		if os.path.exists(f'{storage_path}/{filename}'): return {'status': True, 'path': f'{storage_path}/{filename}'}
 		else: return {'status': False, 'message': 'The file could not be found on the server.'}
-

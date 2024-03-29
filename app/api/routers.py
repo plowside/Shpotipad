@@ -24,11 +24,20 @@ async def router_login(request: Request, response: Response, payload: UserLogin)
 	jwt_token = await auth_user(user)
 	return {'status': True, 'code': 200, **jwt_token}
 
-
 @router.post('/register')
 async def router_register(request: Request, response: Response, payload: UserRegister):
 	user = await create_user(payload)
-	if user.get('message'):
+	if not user['status']:
+		return {'status': False, 'code': 409, 'message': user.get('message')}
+	user = user['user']
+
+	jwt_token = await auth_user(user)
+	return {'status': True, 'code': 200, **jwt_token}
+
+@router.post('/reset')
+async def router_register(request: Request, response: Response, payload: UserReset):
+	user = await reset_user(payload)
+	if not user['status']:
 		return {'status': False, 'code': 409, 'message': user.get('message')}
 	user = user['user']
 
@@ -41,8 +50,8 @@ async def router_send_code(request: Request, response: Response, payload: UserSe
 	if not code['status']:
 		return {'status': False, 'code': 409, 'message': code.get('message')}
 
+	return code
 
-	return {'status': True, 'code': 200, 'message': 'Verify code sent'}
 
 
 @router.get('/me')
@@ -62,7 +71,6 @@ async def router_me(request: Request, response: Response, payload: UserUpdate, A
 	user = user['user']
 
 	payload.password = None if payload.password in ('', ' ') else payload.password
-	print(payload)
 	if not (3 <= len(payload.username) <= 32):
 		if len(payload.username) > 32:
 			return {'status': False, 'code': 409, 'message': 'Max. username\'s length is 32 characters'}
@@ -76,10 +84,16 @@ async def router_me(request: Request, response: Response, payload: UserUpdate, A
 		else:
 			return {'status': False, 'code': 409, 'message': 'Min. password\'s length is 4 characters'}
 
+	payload.hashed_password = get_password_hash(payload.password) if payload.password else None
+	payload.password = None
+
 	_db = database_driver()
 	user = _db.update_user(user, payload)
-
-	return {'status': True, 'code': 200, 'user': dict(user)}
+	response = {'status': True, 'code': 200, 'user': UserSafe(**user).dict()}
+	if payload.hashed_password:
+		token = await auth_user(UserInDB(**user))
+		response['token'] = token['token']
+	return response
 
 
 

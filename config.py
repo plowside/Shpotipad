@@ -14,5 +14,5 @@ cfg_email = {
 	'port': 587,
 	'user': 'resend',
 	'password': 're_fFNkEoQh_KEAar37q2X6VoEQidsw3kuzK',
-	'from': 'plowside <shpotik@resend.dev>'
+	'from': 'plowside <shpotik@shpotipad.ru>'
 }

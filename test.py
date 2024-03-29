@@ -3,17 +3,17 @@ import requests, json
 # Замените URL на актуальный
 url = 'https://shpotipad.pythonanywhere.com/api/sound'
 # Путь к файлу звука
-sound_file_path = r"C:\Users\plows\OneDrive\Рабочий стол\чсмчсмчсм\bear1_weap_reload3_n.wav-CAB_12ae3460088df36a0c1fac14b76afbbc-1308837438952614786.wav"
+sound_file_path = r"C:\Users\plows\Downloads\поздравляю с днём дрочения💖💕💓💕💓 #рек #рофл #мем #активвернись #tiktok (480p).mp4"
 # Данные звука
 sound_data = {
     'sound_data': json.dumps({
-        'sound_name': 'Красный',
-        'sound_tags': ['тарков', 'Tarkov', 'Красный', 'Миша', 'Игра года']
+        'sound_name': 'С днем дрочения',
+        'sound_tags': ['поздравление']
     })
 }
 # Заголовок Authorization (если необходим)
 headers = {
-    'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJrIjoiJDJiJDEyJDMxN2FlZjJiMTQxYzkyMTY4Yjk5M3VSWm1UUzBaU3Q4ZDA0NUZXMDNmUXZ0OU83ZjhKakZxIiwiZXhwaXJlIjoxNzExNjE0MDIzfQ.sDz7VjiEXrPEL_8o5-lQVqAiuAwv5hADytLjSmS2XRE'
+    'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJrIjoiJDJiJDEyJDMxN2FlZjJiMTQxYzkyMTY4Yjk5M3VSWm1UUzBaU3Q4ZDA0NUZXMDNmUXZ0OU83ZjhKakZxIiwiZXhwaXJlIjoxNzExNjM0NzcyfQ.kWIwkxOMiTkZTQffctOKlD9a1rLE5Z0nx6gQ2Fb4w7o'
 }
 
 # Создание запроса
