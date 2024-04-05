@@ -1055,7 +1055,7 @@
 				</div>
 			</div>
 			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendLogin() }">
-				<input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" minlength="3" maxlength="64" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required>
+				<input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" minlength="3" maxlength="64" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" required>
 				<input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required>
 				<i class="togglePassword fa-regular fa-eye-slash"></i>
 				<button type="submit" class="login-button">Login</button>
@@ -1067,7 +1067,7 @@
 				<button class="createAccount" onclick="logout()">Logout</button>
 			</div>
 			<form onsubmit="event.preventDefault(); if (this.checkValidity()) { updateProfile() }">
-				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUM(event)" required disabled>
+				<input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" required disabled>
 				<input type="text" class="username" name="username" minlength="3" maxlength="32" placeholder="Username" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" autocomplete="on | off" required>
 				<input type="password" class="password" name="password" minlength="4" maxlength="128" placeholder="Password" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" autocomplete="on | off">
 				<i class="togglePassword fa-regular fa-eye-slash"></i>
@@ -1194,7 +1194,7 @@
 			e.preventDefault();
 			var p_start = el.selectionStart;
 			var p_end = el.selectionEnd;
-			var r = (e.clipboardData || window.clipboardData).getData('text').split('').filter(char => 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'.includes(char.toLowerCase())).join('');
+			var r = (e.clipboardData || window.clipboardData).getData('text').split('').filter(char => 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/.'.includes(char.toLowerCase())).join('');
 			el.value = el.value.substring(0, p_start) + r + el.value.substring(p_end);
 			el.selectionStart = p_start+r.length;
 			el.selectionEnd = p_start+r.length;
@@ -1249,6 +1249,7 @@
 				}, 500);
 			}, 1000);
 		}
+		function isEM(event) {return 'abcdefghijklmnopqrstuvwxyz1234567890_@.'.includes(event.key.toLowerCase());}
 		function isUK(event) {return 'abcdefghijklmnopqrstuvwxyz1234567890_'.includes(event.key.toLowerCase());}
 		function isPK(event) {return 'abcdefghijklmnopqrstuvwxyz1234567890_!@#$&/'.includes(event.key.toLowerCase());}
 		function isN(event) {return '1234567890'.includes(event.key);}
@@ -1363,6 +1364,7 @@
 				var objectUrl = window.URL.createObjectURL(blob);
 				a.href = objectUrl;
 				a.download = filename;
+				a.setAttribute("target", "_blank");
 				a.click();
 				window.URL.revokeObjectURL(objectUrl);
 			} catch (error) {
@@ -1581,11 +1583,11 @@
 
 				profileModal.querySelector('.reg-block').setAttribute('state', state);
 				if (state == 'email'){
-					profileModal.querySelector('.reg-block').innerHTML = `<h2>Create Account</h2><div style="text-align: left;"><button class="createAccount" onclick="profileModalCreateAccount()">Sign in</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required></i><button type="submit" class="login-button">Create</button></form>`;
+					profileModal.querySelector('.reg-block').innerHTML = `<h2>Create Account</h2><div style="text-align: left;"><button class="createAccount" onclick="profileModalCreateAccount()">Sign in</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" required></i><button type="submit" class="login-button">Create</button></form>`;
 				} else if (state == 'code'){
-					profileModal.querySelector('.reg-block').innerHTML = `<h2>Verify Email</h2><p style="font-weight: 600; margin-bottom: 50px;">We sent verify code to `+state_data.email+`</p><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reg', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" value="`+state_data.email+`" required disabled><input type="text" class="code" name="code" placeholder="Verify code" minlength="5" maxlength="5" autocomplete="off" onpaste="handlePaste(this, event)" onkeypress="return isN(event)" required><button type="submit" class="login-button">Verify</button></form>`;
+					profileModal.querySelector('.reg-block').innerHTML = `<h2>Verify Email</h2><p style="font-weight: 600; margin-bottom: 50px;">We sent verify code to `+state_data.email+`</p><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reg', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" value="`+state_data.email+`" required disabled><input type="text" class="code" name="code" placeholder="Verify code" minlength="5" maxlength="5" autocomplete="off" onpaste="handlePaste(this, event)" onkeypress="return isN(event)" required><button type="submit" class="login-button">Verify</button></form>`;
 				} else if (state == 'creds'){
-					profileModal.querySelector('.reg-block').innerHTML = `<h2>Create Account</h2><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reg', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUM(event)" value="`+state_data.email+`" required disabled><input type="text" class="username" name="username" placeholder="Username" minlength="3" maxlength="32" placeholder="Username" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required><input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required><i class="togglePassword fa-regular fa-eye-slash"></i><button type="submit" class="login-button">Create</button></form>`;
+					profileModal.querySelector('.reg-block').innerHTML = `<h2>Create Account</h2><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reg', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReg() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" value="`+state_data.email+`" required disabled><input type="text" class="username" name="username" placeholder="Username" minlength="3" maxlength="32" placeholder="Username" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required><input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required><i class="togglePassword fa-regular fa-eye-slash"></i><button type="submit" class="login-button">Create</button></form>`;
 				}
 
 				// RESET
@@ -1595,11 +1597,11 @@
 
 				profileModal.querySelector('.reset-block').setAttribute('state', state);
 				if (state == 'email'){
-					profileModal.querySelector('.reset-block').innerHTML = `<h2>Forgot Password</h2><div style="text-align: left;"><button class="createAccount" onclick="profileModalForgotPassword()">Sign in</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }"><input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" required></i><button type="submit" class="login-button">Find</button></form>`;
+					profileModal.querySelector('.reset-block').innerHTML = `<h2>Forgot Password</h2><div style="text-align: left;"><button class="createAccount" onclick="profileModalForgotPassword()">Sign in</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }"><input type="text" class="email" name="email" placeholder="Email/Username" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" required></i><button type="submit" class="login-button">Find</button></form>`;
 				} else if (state == 'code'){
-					profileModal.querySelector('.reset-block').innerHTML = `<h2>Verify Email</h2><p style="font-weight: 600; margin-bottom: 50px;">We sent verify code to `+(state_data.email.includes('@') ? state_data.email : 'email connected to '+ state_data.email)+`</p><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reset', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" value="`+state_data.email+`" required disabled><input type="text" class="code" name="code" placeholder="Verify code" minlength="5" maxlength="5" autocomplete="off" onpaste="handlePaste(this, event)" onkeypress="return isN(event)" required><button type="submit" class="login-button">Verify</button></form>`;
+					profileModal.querySelector('.reset-block').innerHTML = `<h2>Verify Email</h2><p style="font-weight: 600; margin-bottom: 50px;">We sent verify code to `+(state_data.email.includes('@') ? state_data.email : 'email connected to '+ state_data.email)+`</p><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reset', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }"><input type="email" class="email" name="email" placeholder="Email" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" value="`+state_data.email+`" required disabled><input type="text" class="code" name="code" placeholder="Verify code" minlength="5" maxlength="5" autocomplete="off" onpaste="handlePaste(this, event)" onkeypress="return isN(event)" required><button type="submit" class="login-button">Verify</button></form>`;
 				} else if (state == 'creds'){
-					profileModal.querySelector('.reset-block').innerHTML = `<h2>New Password</h2><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reset', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }">`+ (state_data.email.includes('@') ? `<input type="email" class="email" name="email" placeholder="Email" onpaste="handlePaste(this, event)" onkeypress="return isUM(event)" value="`+state_data.email+`" required disabled>` : '<input type="text" class="email" name="username" placeholder="Username" placeholder="Username" onpaste="handlePaste(this, event)" onkeypress="return isUK(event)" value="'+state_data.email+'" required disabled>') +`<input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required><i class="togglePassword fa-regular fa-eye-slash"></i><button type="submit" class="login-button">Change</button></form>`;
+					profileModal.querySelector('.reset-block').innerHTML = `<h2>New Password</h2><div style="text-align: left;"><button class="createAccount" onclick="changeState('auth.state_reset', 'email')">Change email</button></div><form onsubmit="event.preventDefault(); if (this.checkValidity()) { sendReset() }">`+ (state_data.email.includes('@') ? `<input type="email" class="email" name="email" placeholder="Email" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" value="`+state_data.email+`" required disabled>` : '<input type="text" class="email" name="username" placeholder="Username" placeholder="Username" onpaste="handlePaste(this, event)" onkeypress="return isEM(event)" value="'+state_data.email+'" required disabled>') +`<input type="password" class="password" name="password" placeholder="Password" minlength="4" maxlength="128" placeholder="Password" autocomplete="on | off" onpaste="handlePaste(this, event)" onkeypress="return isPK(event)" required><i class="togglePassword fa-regular fa-eye-slash"></i><button type="submit" class="login-button">Change</button></form>`;
 				}
 			}
 			addevents();

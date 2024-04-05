@@ -113,8 +113,10 @@ def router_upload_sound(request: Request, response: Response, sound_file: Upload
 
 	_db = database_driver()
 	sound = _db.upload_sound(sound, sound_file)
+	if not sound['status']: return sound
 
 	return {'status': True, 'sound': sound}
+
 
 @router.put('/sound')
 def router_update_sound(request: Request, response: Response, sound: SoundUpdate, Authorization: str = Header(None)):

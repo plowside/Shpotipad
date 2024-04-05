@@ -104,9 +104,13 @@ def route_dwn_sound(sound_id: int):
 			if not path['status']: raise HTTPException(status_code=404, detail="Sound not found")
 			path = path['path']
 		if os.path.exists(path):
-			cur.execute('UPDATE sounds SET sound_downloads = sound_downloads + 1 WHERE sound_id = ?', [sound_id])
-			con.commit()
+			try:
+				cur.execute('UPDATE sounds SET sound_downloads = sound_downloads + 1 WHERE sound_id = ?', [sound.sound_id])
+				con.commit()
+			except: pass
 			return FileResponse(path=path)
+		else:
+			raise HTTPException(status_code=404, detail="Sound not found")	
 	except Exception as e:
 		logging.error(e)
 		raise HTTPException(status_code=404, detail="Sound not found")

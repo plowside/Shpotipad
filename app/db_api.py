@@ -123,7 +123,7 @@ class database_driver:
 					sound_name TEXT,
 					sound_url TEXT,
 					sound_url_data TEXT,
-					sound_duration INTEGER
+					sound_duration INTEGER,
 					sound_downloads INTEGER DEFAULT (0),
 					create_date INTEGER
 				)
@@ -199,7 +199,7 @@ class database_driver:
 		sounds = self.cur.execute(sql_query, params).fetchall()
 		
 		for x in sounds:
-			x['sound_tags'] = x['sound_tags'].split(',')
+			x['sound_tags'] = x['sound_tags'].split(',') if x['sound_tags'] else []
 
 		return [SoundResponse(**x).dict() for x in sounds]
 
@@ -217,7 +217,7 @@ class database_driver:
 		sql_query += ' GROUP BY s.sound_id'
 		sound = self.cur.execute(sql_query, params).fetchone()
 	
-		sound['sound_tags'] = sound['sound_tags'].split(',')
+		sound['sound_tags'] = sound['sound_tags'].split(',') if sound['sound_tags'] else []
 		return SoundResponse(**sound).dict()
 
 

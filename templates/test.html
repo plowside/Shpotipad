@@ -3,87 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Загрузка файла</title>
-<style>
-	body {
-		background-color: grey;
-	}
-    /* Опциональные стили для украшения поля загрузки */
-    #drop_zone {
-        border: 2px dashed #ccc;
-        width: 300px;
-        height: 200px;
-        line-height: 200px;
-        text-align: center;
-        font-size: larger;
-        margin: 0 auto;
-        margin-top: 50px;
-    }
-</style>
+<title>Загрузка звука в Blob с помощью Fetch</title>
 </head>
 <body>
-<button onclick="sendFiles()">zxc</button>
-
-<div id="drop_zone">Перетащите файлы сюда для загрузки</div>
+<button id="loadButton">Загрузить звук</button>
+<div id="blobId"></div>
 
 <script>
-	var files = [];
+document.getElementById('loadButton').addEventListener('click', function() {
+    fetch('http://192.168.0.13:8000/sound/8')
+    .then(response => response.blob())
+    .then(blob => {
+    	console.log(blob);
+        var blobUrl = URL.createObjectURL(blob);
+        console.log(blobUrl);
+        var blobIdElement = document.getElementById('blobId');
+        var blobId = blobUrl.split('/').pop(); // Получение ID блоба из URL
+        blobIdElement.innerHTML = 'ID загруженного Blob: ' + blobId;
 
-	function sendFiles(){
-		var formData = new FormData();
-const soundData = {
-    sound_name: 'С днем дрочения',
-    sound_tags: ['поздравление']
-};
-		files.forEach(function(file) {
-			formData.append('file', file);
-		});
-		formData.append('sound_data', JSON.stringify(soundData));
-		fetch('/api/sound', {
-				method: 'POST',
-				body: formData
-			}).then(response => {
-				return response.json();
-			}).then(data => {
-				console.log(data);
-				try {
-					if ('error' in data) {
-						alert('Error on record creation: '+data['error']);
-					} else {
-						alert('Record created. ID: '+ data['id']);
-					}
-				} catch (err) {
-					alert('Error on record creation: ' + err);
-				}
-			}).catch(error => {
-				alert('Error on record creation: ',error);
-				console.error('Error:', error);
-			});
-	}
+        // Создание ссылки для открытия в soundpad
+        var soundpadUrl = 'soundpad://sound/' + blobId;
 
-    // Функция для обработки перетаскивания файлов
-    function handleFileSelect(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        // Создание элемента ссылки
+        var soundpadLink = document.createElement('a');
+        soundpadLink.href = soundpadUrl;
+        soundpadLink.textContent = 'Открыть в SoundPad';
+        soundpadLink.style.display = 'block'; // Делаем ссылку блочным элементом для отображения на отдельной строке
+        soundpadLink.target = '_blank'; // Открываем ссылку в новой вкладке
 
-        var file = event.dataTransfer.files[0]; // Получаем список перетащенных файлов
-        files.push(file);
-            console.log('Имя файла: ' + file.name + ', тип: ' + file.type + ', размер: ' + file.size + ' байт');
-    }
-
-    // Функция для предотвращения стандартного поведения браузера при перетаскивании файлов
-    function dragOverHandler(event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    // Получаем элемент drop_zone
-    var dropZone = document.getElementById('drop_zone');
-
-    // Добавляем обработчики событий
-    dropZone.addEventListener('dragover', dragOverHandler, false);
-    dropZone.addEventListener('drop', handleFileSelect, false);
+        // Добавляем ссылку к документу
+        blobIdElement.appendChild(soundpadLink);
+    })
+    .catch(error => {
+        console.error('Произошла ошибка при загрузке файла:', error);
+    });
+});
 </script>
-
 </body>
 </html>
